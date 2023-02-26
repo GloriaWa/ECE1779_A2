@@ -1,0 +1,17 @@
+1. download aws cli
+2. open command window, enter aws configure. Input the access keys. (keys should be created at aws Security credentials )
+3.set up s3 in aws. Create a bucket, copy the bucket name to  self.bk in aswclient.py
+4.set up rds. You can use the create_db() in aws_utils. Copy the endpoint url shown in the aws instance details. Connect using mysql workbench.
+    video for this step: https://www.google.com/search?q=create+table+in+aws+rds+mysql&rlz=1C1YTUH_zh-HKHK1006HK1006&oq=create&aqs=chrome.0.69i59l3j69i57j69i59l2j69i61j69i65.3083j0j9&sourceid=chrome&ie=UTF-8#fpstate=ive&vld=cid:3b09230f,vid:Ng_zi11N4_c
+
+    ***mysql text***
+    CREATE DATABASE a2;
+
+    use a2;
+
+    CREATE TABLE mapping (
+       ikey VARCHAR(255) NOT NULL,
+       ifilename VARCHAR(255) NOT NULL,
+       PRIMARY KEY (ikey)
+    );
+
