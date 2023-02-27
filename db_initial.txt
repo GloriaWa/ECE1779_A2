@@ -1,0 +1,25 @@
+CREATE DATABASE a1
+USE DATABASE a1
+
+CREATE TABLE img(
+   ikey VARCHAR(255) NOT NULL,
+   ipath VARCHAR(255) NOT NULL,
+   PRIMARY KEY (ikey)
+);
+
+CREATE TABLE config(
+    ckey INT NOT NULL AUTO_INCREMENT,
+    ctime INT NOT NULL,
+    cap INT NOT NULL,
+    strategy VARCHAR(255) NOT NULL,
+    PRIMARY KEY (ckey)
+);
+
+CREATE TABLE stats(
+      stime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      size INT NOT NULL,
+      item_count INT NOT NULL,
+      request_count INT NOT NULL,
+      miss_count INT NOT NULL,
+      PRIMARY KEY (stime)
+      );

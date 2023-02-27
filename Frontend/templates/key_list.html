@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+    <head>
+        <title>A1</title>
+	    <link rel="stylesheet" href='/static/css.css' />
+    </head>
+    <body>
+	    {% include "nevigation.html" %}
+
+        {% if db_keys is defined %}
+            <h2>Keys in the database, total no. {{db_key_no}}</h2>
+            <table>
+	        {% for k1 in db_keys %}
+                <tr><td>{{ k1 }}</td></tr>
+            {% endfor %}
+            </table>
+
+        {% else %}
+            <h3>DB Empty or Error</h3>
+        {% endif %}
+
+        <br>
+
+        {% if c_keys is defined %}
+            <h2>Keys in the Cache, total no. {{c_key_no}}</h2>
+            <table>
+	        {% for k2 in c_keys %}
+                <tr><td>{{ k2 }}</td></tr>
+            {% endfor %}
+            </table>
+
+        {% else %}
+            <h3>Cache Empty or Error</h3>
+        {% endif %}
+
+
+    </body>
+</html>

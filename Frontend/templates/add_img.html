@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<head>
+    <title>A1</title>
+    <link rel="stylesheet" href='/static/css.css' />
+</head>
+<html>
+    <body>
+        {% include "nevigation.html" %}
+
+        <h3>Upload Image</h3>
+        <form method="post" enctype=multipart/form-data onsubmit="return validateImg()">
+
+            <label>Image key: </label>
+            <input type="text" id="key" name="key" class="input">
+
+            <br>
+
+            <label>Upload image (Must less than 2 Mb): </label>
+            <input id="img" name="file" type="file" accept="image/*" style="padding: 20px 20px" />
+
+            <div>
+                <input type="submit" id="submit" class="button" value="Submit">
+            </div>
+
+
+            <div>
+                {% if result is defined %}
+                    {% if result == "ok" %}
+                        <h4>Success</h4>
+                    {% elif result == "fail" %}
+                        <h4>Fail</h4>
+                    {% else %}
+                        <h4>Invalid Image, Wrong Extension or Size Too Big</h4>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </form>
+    <body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+    <title>A1</title>
+    <link rel="stylesheet" href='/static/css.css' />
+</head>
+<html>
+    <body>
+        {% include "nevigation.html" %}
+
+        <h2>Memcache Reconfiguration</h2>
+
+        <div>
+            <form method="post">
+                <label><b>Configure memcache capacity, need to be less than 20: </b></label>
+                <input type="text" id="capacity" name="capacity" value="{{ capacity }}" class="input">
+                <br>
+
+                <label><b>Configure cache strategy: </b></label>
+                <div>
+                    <label for="LRU">Least Recently Used</label>
+                    <input id="LRU" name="strategy" value="Least Recently Used" type="radio" checked>
+                </div>
+                <div>
+                    <label for="RR">Random Replacement</label>
+                    <input type="radio" id="RR" name="strategy" value="Random Replacement">
+                </div>
+
+                <input id="submit" type="submit" class="button" value="Reconfigure">
+            </form>
+        </div>
+
+        <div>
+            <form method="post" style="margin-top:30px;">
+                <input name="clear_cache" style="visibility: collapse; height: 0px; width: 1px">
+                <input id="clear_cache" type="submit" class="button" style="width:30%" value="Clear Cache">
+            </form>
+        </div>
+
+        <div>
+            <form method="post" style="margin-top:30px;">
+                <input name="clear_all" style="visibility: collapse; height: 0px; width: 1px">
+                <input id="clear_all" type="submit" class="button" style="width:30%" value="Clear ALL (db and memcache)">
+            </form>
+        </div>
+
+        <div>
+            {% if status is defined %}
+                {% if status == "fail" %}
+                    <h4 >Fail to reconfigure memcache</h4>
+                {% elif status == "suc" %}
+                    <h4 >Memcache Reconfigured</h4>
+                {% elif status == "all_clear" %}
+                    <h4 >Clear all done!</h4>
+                {% else %}
+                    <h4 >Memcache Cleared</h4>
+                {% endif %}
+            {% endif %}
+        </div>
+
+    <body>    
+</html>

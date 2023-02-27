@@ -1,1 +1,2 @@
-# ECE1779_A2
+# ECE1779 A2
+Group 9

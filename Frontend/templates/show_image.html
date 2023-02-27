@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<head>
+    <title>A1</title>
+    <link rel="stylesheet" href='/static/css.css' />
+</head>
+<html>
+    <body>
+        {% include "nevigation.html" %}
+        <h2>Show Image</h2>
+
+        <form method="post">
+            <label>Key: </label>
+            <input id="key" name="key" type="text" class="input">
+            <input class="button" value="Show" type="submit">
+        </form>
+
+        <div style="margin-top:20px">
+            {% if img is defined %}
+                {% if exists %}
+
+<!--                https://stackoverflow.com/questions/11511511/how-to-save-a-png-image-server-side-from-a-base64-data-uri-->
+                    <img src= "data:image/png;base64,{{ img }}" class="img"/>
+
+                {% else %}
+                    <h4>Image does not exist!</h4>
+                {% endif %}
+            {% endif %}
+        </div>
+
+    </body>
+</html>
