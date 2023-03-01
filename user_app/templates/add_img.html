@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+    <title>A2</title>
+    <link rel="stylesheet" href='/static/css.css' />
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+</head>
+<html>
+    <body>
+        {% include "navigation.html" %}
+
+        <script>
+            function validateImg() {
+                key = document.getElementById("key").value != "";
+                image = document.getElementById("img").value !== "";
+
+                return image_exists && key_exists;
+            }
+        </script>
+
+        <h3>Upload Image</h3>
+        <form method="post" enctype=multipart/form-data onsubmit="return validateImg()">
+
+            <label>Image key: </label>
+            <input type="text" id="key" name="key" class="input">
+
+            <br>
+
+            <label>Upload image: </label>
+            <input id="img" name="file" type="file" accept="image/*" style="padding: 20px 20px" />
+
+            <div>
+                <input type="submit" id="submit" class="button" value="Submit">
+            </div>
+
+
+            <div>
+                {% if result is defined %}
+                        <h4>{{result}}</h4>
+                {% endif %}
+            </div>
+        </form>
+    <body>
+</html>
