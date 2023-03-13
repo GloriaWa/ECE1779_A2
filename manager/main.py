@@ -2,6 +2,8 @@ import threading
 import requests, datetime
 import sys, os
 import manager.config as conf
+import flask as f
+import hashlib as hl
 from flask import render_template, request, g, jsonify
 
 from manager.Utilities import *
@@ -172,14 +174,40 @@ def get_key_list():
 
 @webapp.route('/get', methods=['POST'])
 def get():
-    return
+    js = f.request.get_json(force=True)
+    key = js["key"]
+
+    hashed = hl.md5()
+    hashed.update(bytes(key.encode('utf-8')))
+    target = int(hashed.hexdigest(), 16) % conf.active_node
+
+    j = {"key": key}
+    res = requests.post(conf.cache_pool[target] + '/get', json=j)
+
+    return res
 
 @webapp.route('/put', methods=['POST'])
 def put():
-    return
+    js = f.request.get_json(force=True)
+    key = js["key"]
+    img = js["img"]
+
+    hashed = hl.md5()
+    hashed.update(bytes(key.encode('utf-8')))
+    target = int(hashed.hexdigest(), 16) % conf.active_node
+
+    j = {"key": key, "img": img}
+    res = requests.post(conf.cache_pool[target] + '/put', json=j)
+
+    return res
+
 
 @webapp.route('/invalidate', methods=['POST'])
 def invalidate():
+    ############ need optimization
+    js = f.request.get_json(force=True)
+    for i in range(conf.active_node):
+        requests.post(conf.cache_pool[i] + '/invalidate', json=js)
     return
 
 
@@ -217,6 +245,11 @@ def toggle_auto_mode():
         j = {"mode": 1}
         requests.post(autoscaler + '/toggle_mode', json=j)
 
+@webapp.route('/clear_all', methods=['GET', 'POST'])
+def clear_all():
+    requests.post(image_storage + '/delete_all')
+    for i in range(conf.active_node):
+        requests.post(conf.cache_pool[i] + '/clear')
 
 
 
