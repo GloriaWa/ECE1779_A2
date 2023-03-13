@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<head>
+    <title>A1</title>
+    <link rel="stylesheet" href='/static/css.css' />
+</head>
+<html>
+    <body>
+        {% include "nevigation.html" %}
+
+        <h3>Cache status of last 10 minutes</h3>
+        <br>
+
+        <div>
+			<div>
+                {% if cache_count_plot is defined %}
+                    <h4>Cache Item Count: </h4>
+                    <img src= "data:image/png;base64, {{cache_count_plot}}" alt={{cache_count_plot}}  class="img"/>
+                {% else %}
+                    <h4>Cache Item Plot Error</h4>
+                {% endif %}
+            </div>
+
+            <div>
+                {% if cache_size_plot is defined %}
+                    <h4>Cache Size (Mb): </h4>
+                    <img src= "data:image/png;base64, {{cache_size_plot}}" alt={{cache_size_plot}}  class="img"/>
+                {% else %}
+                    <h4>Cache Size Plot Error</h4>
+                {% endif %}
+			</div>
+
+			<div>
+                {% if request_count_plot is defined %}
+                    <h4>Request Count: </h4>
+                    <img src= "data:image/png;base64, {{request_count_plot}}" alt={{request_count_plot}}  class="img"/>
+                {% else %}
+                    <h4>Request Count Plot Error</h4>
+                {% endif %}
+            </div>
+
+            <div>
+                {% if miss_count_plot is defined %}
+                    <h4>Miss Count: </h4>
+                    <img src= "data:image/png;base64, {{miss_count_plot}}" alt={{miss_count_plot}}  class="img"/>
+                {% else %}
+                    <h4>Miss Count Plot Error</h4>
+                {% endif %}
+			</div>
+
+            <div>
+                {% if hit_count_plot is defined %}
+                    <h4>Hit Count:</h4>
+                    <img src= "data:image/png;base64, {{hit_count_plot}}" alt={{hit_count_plot}}  class="img"/>
+                {% else %}
+                    <h4>Hit Count Plot Error</h4>
+                {% endif %}
+            </div>
+
+    </body>
+</html>
