@@ -5,12 +5,12 @@ from datetime import datetime, timedelta
 
 class AwsClient:
     def __init__(self):
-        self.s3 = boto3.resource('s3')
-        self.s3cli = boto3.client('s3')
-        self.cw = boto3.client('cloudwatch')
-        self.rds = boto3.client('rds')
+        self.s3 = boto3.resource('s3', region_name='us-east-1')
+        self.s3cli = boto3.client('s3', region_name='us-east-1')
+        self.cw = boto3.client('cloudwatch', region_name='us-east-1')
+        self.rds = boto3.client('rds', region_name='us-east-1')
         # the bucket is created on aws previous to using the code
-        self.bk = "ece1779customimages"
+        self.bk = "ece1779-1"
 
     def s3_clear(self):
         s3_bucket = self.s3.Bucket(self.bk)
