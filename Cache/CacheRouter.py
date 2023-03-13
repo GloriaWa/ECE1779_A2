@@ -34,7 +34,9 @@ class Router:
         collision_partition = self.diff(self.hash_ring, old_partition)
         """
         ## TODO: found collision partitions, need to do data migration
+        using invalidate and put from Api.py
         """
+
 
     def remove_node(self, ip_address: str, name: str) -> None:
         removal = Node.__int__(name=name, address=ip_address, status=True)
@@ -44,5 +46,5 @@ class Router:
         self.fill()
         collision_partition = self.diff(self.hash_ring, old_partition)
         """
-        ## TODO: found 
+        ## TODO: found invalid partitions, the same as before
         """
