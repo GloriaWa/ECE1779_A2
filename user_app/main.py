@@ -14,7 +14,7 @@ def initial_settings():
         re = re.json()
         if re["message"] != "success":
             print(re["message"])
-            sys.exit()
+            # sys.exit()
     except requests.ConnectionError as e:
         print(e)
 
