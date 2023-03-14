@@ -226,7 +226,9 @@ def invalidate():
     js = f.request.get_json(force=True)
     for i in range(conf.active_node):
         requests.post(conf.cache_pool[i] + '/invalidate', json=js)
-    return
+    return jsonify({
+                    "message": "success"
+                    })
 
 
 @webapp.route('/change_pool', methods=['GET', 'POST'])
@@ -241,6 +243,10 @@ def change_pool():
 
     j = {"node_num": conf.active_node}
     requests.post(userApp + '/cache_pool_change', json=j)
+    
+    return jsonify({
+        "message": "success"
+    })
 
 @webapp.route('/pool_config', methods=['GET', 'POST'])
 def pool_config():
