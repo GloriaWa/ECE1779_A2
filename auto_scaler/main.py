@@ -22,7 +22,7 @@ def toggle_mode():
 
     js = f.request.get_json(force=True)
     mode = js["mode"]
-    print(mode)
+    # print(mode)
 
     auto = mode
     return jsonify({
