@@ -160,7 +160,8 @@ def memcache_config():
                 # if successs
                 if status != None:
                     for i in range(conf.active_node):
-                        res = requests.post(conf.cache_pool[i] + '/refreshConfiguration')
+                        j = {"size": new_cap, "strategy": new_strategy}
+                        res = requests.post(conf.cache_pool[i] + '/refreshConfiguration', json=j)
 
                         if res.json()['message'] != 'ok':
                             return render_template('memcache_config.html', capacity=capacity, strategy=stra, status="fail")
