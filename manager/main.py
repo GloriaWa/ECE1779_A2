@@ -69,7 +69,7 @@ def cache_stats():
     """ show the cache statistics page, and graphs that show the parameters of the cache will be shown """
 
     # get ready for plotting
-    xx = []
+    # xx = []
     yy = {'item_count': [], 'request_count': [], 'hit_rate': [], 'miss_rate': [], 'cache_size': []}
 
     j = {"metric": "num_items"}
@@ -96,6 +96,8 @@ def cache_stats():
     res = requests.post(image_storage + '/cw_get', json=j)
     res = res.json()
     yy['cache_size'].extend(res["values"])
+
+    xx = [i for i in len(yy['item_count'])]
 
     # plot the graphs, the plotted graphs will be shown in the page, and graphs are updated every 5 seconds, since new data will be pushed to the db every 5 seconds
     plots = {}
