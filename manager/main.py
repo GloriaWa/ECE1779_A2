@@ -223,6 +223,7 @@ def put():
 
     j = {"key": key, "img": img}
     res = requests.post(conf.cache_pool[target] + '/put', json=j)
+    res = res.json()
 
     return res
 
