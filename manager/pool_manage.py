@@ -33,7 +33,7 @@ def double_node():
 
     for i in range(conf.active_node):
         re = requests.post(conf.cache_pool[i] + '/get_all')
-        re.json()
+        re = re.json()
 
         if re != None:
             id.extend(re["keys"])
@@ -53,8 +53,8 @@ def divide_node():
 
     for i in range(conf.active_node):
         re = requests.post(conf.cache_pool[i] + '/get_all')
-        re.json()
-        
+        re = re.json()
+
         if re != None:
             id.extend(re["keys"])
             img.extend(re["items"])
@@ -73,7 +73,7 @@ def add_node():
 
     for i in range(conf.active_node):
         re = requests.post(conf.cache_pool[i] + '/get_all')
-        re.json()
+        re = re.json()
 
         if re != None:
             id.extend(re["keys"])
@@ -93,7 +93,7 @@ def minus_node():
 
     for i in range(conf.active_node):
         re = requests.post(conf.cache_pool[i] + '/get_all')
-        re.json()
+        re = re.json()
 
         if re != None:
             id.extend(re["keys"])
