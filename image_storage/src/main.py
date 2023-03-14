@@ -98,11 +98,11 @@ def cw_put():
     j = {"success": "true"}
 
     # miss_rate, hit_rate, num_items, size_of_items, num_requests
-    miss_rate = request.form.get('key')
-    hit_rate = request.form.get('key')
-    num_items = request.form.get('key')
-    size_of_items = request.form.get('key')
-    num_requests = request.form.get('key')
+    miss_rate = request.form.get('miss_rate')
+    hit_rate = request.form.get('hit_rate')
+    num_items = request.form.get('num_items')
+    size_of_items = request.form.get('size_of_items')
+    num_requests = request.form.get('num_requests')
 
     re = awsclient.cw_put(miss_rate, hit_rate, num_items, size_of_items, num_requests)
 
@@ -113,12 +113,9 @@ def cw_put():
 
 @storageApp.route('/cw_get', methods=['POST'])
 def cw_get():
+    metric = request.form.get('metric')
+    re = awsclient.cw_get(metric)
 
     j = {"success": "true"}
-
-    ##### metric每次都要换？
-    metric = request.form.get('metric')
-
-    re = awsclient.cw_get(metric)
     return jsonify({"success": "true", "values": re})
 

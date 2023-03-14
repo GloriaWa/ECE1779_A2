@@ -129,6 +129,9 @@ def key_list():
     else:
         return render_template('key_list.html')
 
+@webapp.route('/cache_pool_change', methods=['GET', 'POST'])
+def cache_pool_change():
+    return # render page notification
 
 # ________________________auto test api _________________________
 @webapp.route('/api/delete_all', methods=['POST'])

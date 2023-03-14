@@ -29,7 +29,7 @@ def check():
             j_add = {"pool_update": "+"}
             res = requests.post(cache_pool_host + '/change_pool', json=j_add)
         elif miss < 0.9:
-            j_minus= {"pool_update": "-"}
+            j_minus = {"pool_update": "-"}
             res = requests.post(cache_pool_host + '/change_pool', json=j_minus)
 
     # print("here")

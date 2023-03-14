@@ -111,7 +111,5 @@ def reallocate(id, img, new_pool):
 
         i += 1
 
-
-
     return
 
