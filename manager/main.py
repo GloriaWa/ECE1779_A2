@@ -70,7 +70,7 @@ def cache_stats():
 
     # get ready for plotting
     # xx = []
-    yy = {'item_count': [], 'request_count': [], 'hit_rate': [], 'miss_rate': [], 'cache_size': []}
+    yy = {}
 
     j = {"metric": "num_items"}
     res = requests.post(image_storage + '/cw_get', json=j)
@@ -97,7 +97,7 @@ def cache_stats():
     res = res.json()
     yy['cache_size'] = res["values"].copy()
 
-    xx = [i for i in range(len(yy['item_count']))]
+    xx = [i for i in range(30)]
     print(xx)
     print(yy['item_count'])
 
