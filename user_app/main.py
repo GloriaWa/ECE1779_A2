@@ -1,5 +1,6 @@
 import sys, os
 import requests
+import flask as f
 from flask import render_template, request, jsonify
 from user_app import webapp
 from host_map import *
@@ -131,7 +132,9 @@ def key_list():
 
 @webapp.route('/cache_pool_change', methods=['GET', 'POST'])
 def cache_pool_change():
-    return # render page notification
+    # node_num
+    node_num = f.request.get_json(force=True)["node_num"]
+    return render_template("pool_change.html", node_num=node_num)
 
 # ________________________auto test api _________________________
 @webapp.route('/api/delete_all', methods=['POST'])

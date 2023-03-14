@@ -239,43 +239,66 @@ def change_pool():
     else:
         divide_node()
 
-    j = {"message": "Cache pool changed! Current num of active node: " + str(len(conf.active_node))}
+    j = {"node_num": conf.active_node}
     requests.post(userApp + '/cache_pool_change', json=j)
 
-@webapp.route('/manual_change_pool', methods=['GET', 'POST'])
-def manual_change_pool():
-    if request.form.get("add_node") != None:
+@webapp.route('/pool_config', methods=['GET', 'POST'])
+def pool_config():
+    node_num = conf.active_node
+    mode = conf.mode
+
+    if request.method == 'GET':
+        return render_template('pool_config.html', node_num=node_num, mode=mode)
+
+    if request.form.get("option") != None:
+        mode = request.form.get("option")
+        if mode == 'A':
+            j = {"mode": 1}
+            conf.mode = 1
+            requests.post(autoscaler + '/toggle_mode', json=j)
+            return render_template('pool_config.html', node_num=node_num, mode=mode, mode_mes="suc")
+        elif mode == 'M':
+            j = {"mode": 0}
+            conf.mode = 0
+            requests.post(autoscaler + '/toggle_mode', json=j)
+            return render_template('pool_config.html', node_num=node_num, mode=mode, mode_mes="suc")
+        return render_template('pool_config.html', node_num=node_num, mode=mode, mode_mes="fail")
+
+    if request.form.get("increase_node") != None:
         re = add_node()
-    elif request.form.get("minus_node") != None:
+    elif request.form.get("decrease_node") != None:
         re = minus_node()
 
-    j = {"message": "Cache pool changed! Current num of active node: " + str(len(conf.active_node))}
+    j = {"node_num": conf.active_node}
     requests.post(userApp + '/cache_pool_change', json=j)
 
-    return render_template('memcache_config.html')
+    return render_template('pool_config.html', node_num=node_num, mode=mode, mes="suc")
 
-@webapp.route('/toggle_auto_mode', methods=['GET', 'POST'])
-def toggle_auto_mode():
-    if request.form.get("manual_mode") != None:
-        j = {"mode": 0}
-        requests.post(autoscaler + '/toggle_mode', json=j)
-    elif request.form.get("auto_mode") != None:
-        j = {"mode": 1}
-        requests.post(autoscaler + '/toggle_mode', json=j)
-
-@webapp.route('/clear_cache', methods=['GET', 'POST'])
-def clear_cache():
-    for i in range(conf.active_node):
-        requests.post(conf.cache_pool[i] + '/clear')
-    return # render page
-
-@webapp.route('/clear_all', methods=['GET', 'POST'])
-def clear_all():
-    requests.post(image_storage + '/delete_all')
-    for i in range(conf.active_node):
-        requests.post(conf.cache_pool[i] + '/clear')
-    return # render page
-
+# @webapp.route('/toggle_auto_mode', methods=['GET', 'POST'])
+# def toggle_auto_mode():
+#     if request.form.get("manual_mode") != None:
+#         j = {"mode": 0}
+#         conf.mode = 0
+#         requests.post(autoscaler + '/toggle_mode', json=j)
+#
+#     elif request.form.get("auto_mode") != None:
+#         j = {"mode": 1}
+#         conf.mode = 1
+#         requests.post(autoscaler + '/toggle_mode', json=j)
+#
+# @webapp.route('/clear_cache', methods=['GET', 'POST'])
+# def clear_cache():
+#     for i in range(conf.active_node):
+#         requests.post(conf.cache_pool[i] + '/clear')
+#     return # render page
+#
+# @webapp.route('/clear_all', methods=['GET', 'POST'])
+# def clear_all():
+#     requests.post(image_storage + '/delete_all')
+#     for i in range(conf.active_node):
+#         requests.post(conf.cache_pool[i] + '/clear')
+#     return # render page
+#
 
 
 

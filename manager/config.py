@@ -10,5 +10,7 @@ cache_pool = {
 }
 
 active_node = 1
+mode = 0
+
 capacity = 12
 strategy = 'LRU'
