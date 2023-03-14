@@ -29,7 +29,7 @@ def pollStatus():
         miss_count = 0
         size = 0
 
-        for i in conf.active_node:
+        for i in range(conf.active_node):
             res = requests.post(conf.cache_pool[i] + '/stats')
             res = res.json()
 
@@ -129,14 +129,14 @@ def memcache_config():
     else:
         # if request to clear the cache
         if request.form.get("clear_cache") != None:
-            for i in conf.active_node:
+            for i in range(conf.active_node):
                 requests.post(conf.cache_pool[i] + '/clear')
 
             return render_template('memcache_config.html', capacity=capacity, strategy=stra, status="mem_clear")
 
         # else if request to clear ALL
         elif request.form.get("clear_all") != None:
-            for i in conf.active_node:
+            for i in range(conf.active_node):
                 requests.post(conf.cache_pool[i] + '/clear')
 
             requests.post(image_storage + '/delete_all')
@@ -160,7 +160,7 @@ def memcache_config():
 
                 # if successs
                 if status != None:
-                    for i in conf.active_node:
+                    for i in range(conf.active_node):
                         res = requests.post(conf.cache_pool[i] + '/refreshConfiguration')
 
                         if res.json()['message'] != 'ok':
