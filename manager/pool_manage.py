@@ -33,9 +33,11 @@ def double_node():
 
     for i in range(conf.active_node):
         re = requests.post(conf.cache_pool[i] + '/get_all')
-        re.json()
-        id.extend(re["keys"])
-        img.extend(re["items"])
+        re = re.json()
+
+        if re != None:
+            id.extend(re["keys"])
+            img.extend(re["items"])
 
         requests.post(conf.cache_pool[i] + '/clear')
 
@@ -51,9 +53,11 @@ def divide_node():
 
     for i in range(conf.active_node):
         re = requests.post(conf.cache_pool[i] + '/get_all')
-        re.json()
-        id.extend(re["keys"])
-        img.extend(re["items"])
+        re = re.json()
+
+        if re != None:
+            id.extend(re["keys"])
+            img.extend(re["items"])
 
         requests.post(conf.cache_pool[i] + '/clear')
 
@@ -69,9 +73,11 @@ def add_node():
 
     for i in range(conf.active_node):
         re = requests.post(conf.cache_pool[i] + '/get_all')
-        re.json()
-        id.extend(re["keys"])
-        img.extend(re["items"])
+        re = re.json()
+
+        if re != None:
+            id.extend(re["keys"])
+            img.extend(re["items"])
 
         requests.post(conf.cache_pool[i] + '/clear')
 
@@ -87,9 +93,11 @@ def minus_node():
 
     for i in range(conf.active_node):
         re = requests.post(conf.cache_pool[i] + '/get_all')
-        re.json()
-        id.extend(re["keys"])
-        img.extend(re["items"])
+        re = re.json()
+
+        if re != None:
+            id.extend(re["keys"])
+            img.extend(re["items"])
 
         requests.post(conf.cache_pool[i] + '/clear')
 
@@ -110,8 +118,6 @@ def reallocate(id, img, new_pool):
         requests.post(conf.cache_pool[target] + '/put', json=j)
 
         i += 1
-
-
 
     return
 

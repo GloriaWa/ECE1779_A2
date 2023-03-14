@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title> Pool Configuration </title>
+    <link rel="stylesheet" href='/static/css.css' />
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+</head>
+<body>
+    {% include "nevigation.html" %}
+
+    <h2>Node Pool Reconfiguration</h2>
+        <div><p>
+            <label>Current resizing option:<b> {{mode}} </b></label>
+            <br><label>Number of active nodes: <b>{{node_num}}</b></label>
+            {% if mode =="M" %}
+                <form method="post">
+                    <input name="increase_node" style="visibility: collapse; height: 0px; width: 1px">
+                    <input id="increase_node" type="submit" class="button" value="increase node by 1">
+                </form>
+                <form method="post">
+                    <input name="decrease_node" style="visibility: collapse; height: 0px; width: 1px">
+                    <input id="decrease_node" type="submit" class="button" value="reduce node by 1">
+                </form>
+            {% endif %}
+            <div>
+            {% if mes is defined %}
+                {% if mes == "fail" %}
+                    <h4 >node number reconfiguration fail</h4>
+                {% elif mes == "suc" %}
+                    <h4 >Node pool reconfigured success</h4>
+                {% endif %}
+            {% endif %}
+            </div>
+        </p></div>
+
+        <div>
+            <form method="post">
+                <label><b>Configure resizing option: </b></label>
+                <div>
+                    <label for="A">Automatic resizing (A)</label>
+                    <input id="A" name="option" value="A" type="radio" checked>
+                </div>
+                <div>
+                    <label for="M">Manual resizing (M)</label>
+                    <input type="radio" id="M" name="option" value="M">
+                </div>
+
+                <input id="submit" type="submit" class="button" value="Reconfigure">
+            </form>
+            <div>
+            {% if mode_mes is defined %}
+                {% if mode_mes == "fail" %}
+                    <h4 >Fail to set resizing mode</h4>
+                {% elif mode_mes == "suc" %}
+                    <h4 >Success to set resizing mode</h4>
+                {% endif %}
+            {% endif %}
+            </div>
+        </div>
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 import sys, os
 import requests
+import flask as f
 from flask import render_template, request, jsonify
 from user_app import webapp
 from host_map import *
@@ -7,16 +8,16 @@ from host_map import *
 EXT = {'.png', '.jpg', '.jpeg', '.gif', '.ico'}
 
 
-@webapp.before_first_request
-def initial_settings():
-    try:
-        re = requests.post(image_storage + "/test")
-        re = re.json()
-        if re["message"] != "success":
-            print(re["message"])
-            # sys.exit()
-    except requests.ConnectionError as e:
-        print(e)
+# @webapp.before_first_request
+# def initial_settings():
+#     try:
+#         re = requests.post(image_storage + "/test")
+#         re = re.json()
+#         if re["message"] != "success":
+#             print(re["message"])
+#             # sys.exit()
+#     except requests.ConnectionError as e:
+#         print(e)
 
 
 @webapp.route('/')
@@ -71,8 +72,8 @@ def show_image():
             res = requests.post(cache_pool_host + '/get', json=j)
         except requests.ConnectionError:
             return render_template('show_image.html', exists=False, img="error connecting cache pool")
-        res = res.json()
 
+        res = res.json()
         if res['message'] == 'miss':
             try:
                 re = requests.post(image_storage + "/read/" + key)
@@ -129,6 +130,11 @@ def key_list():
     else:
         return render_template('key_list.html')
 
+@webapp.route('/cache_pool_change', methods=['GET', 'POST'])
+def cache_pool_change():
+    # node_num
+    node_num = f.request.get_json(force=True)["node_num"]
+    return render_template("pool_change.html", node_num=node_num)
 
 # ________________________auto test api _________________________
 @webapp.route('/api/delete_all', methods=['POST'])

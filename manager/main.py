@@ -5,7 +5,9 @@ import manager.config as conf
 import flask as f
 import hashlib as hl
 from flask import render_template, request, g, jsonify
+import time
 
+from manager.MySQLconnect import *
 from manager.Utilities import *
 from manager import webapp
 from manager.pool_manage import *
@@ -22,8 +24,28 @@ def pollStatus():
     """ When the server is up, call backend every 5 seconds. The backend will upload its status information to the db, and this info is used for the statistics """
 
     while True:
-        j = {}
-        res = requests.post(cache_host + '/stats', json=j)
+        item_count = 0
+        request_count = 0
+        miss_count = 0
+        size = 0
+
+        for i in range(conf.active_node):
+            res = requests.post(conf.cache_pool[i] + '/stats')
+            res = res.json()
+
+            item_count += res["item_count"]
+            request_count += res["request_count"]
+            miss_count += res["miss_count"]
+            size += res["size"]
+
+        miss_rate = 0
+        hit_rate = 1
+        if request_count != 0:
+            miss_rate = miss_count / request_count
+            hit_rate = 1 - miss_rate
+
+        j = {"miss_rate": miss_rate, "hit_rate": hit_rate, "num_items": item_count,"size_of_items": size / (1024 * 1024), "num_requests": request_count}
+        re = requests.post(image_storage + '/cw_put', json=j)
         time.sleep(5)
 
 @webapp.teardown_appcontext
@@ -45,45 +67,42 @@ def not_found(e):
 @webapp.route('/cache_stats')
 def cache_stats():
     """ show the cache statistics page, and graphs that show the parameters of the cache will be shown """
-    #
-    # cnx = get_db()
-    #
-    # # Nice dictionary! Like it it make things easier...
-    # cursor = cnx.cursor(dictionary=True)
-    #
-    # stop_time = datetime.datetime.now()
-    # start_time = stop_time - datetime.timedelta(minutes=10)
-    #
-    # query = '''SELECT * FROM stats WHERE stime > %s and stime < %s'''
-    # cursor.execute(query, (start_time, stop_time))
-    # rows = cursor.fetchall()
-    # cnx.close()
-    #
-    # # get ready for plotting
-    # xx = []
-    # yy = {'item_count': [], 'request_count': [], 'hit_count': [], 'miss_count': [], 'cache_size': []}
-    #
-    # for r in rows:
-    #
-    #     # prepare the data rows from the database and ready to draw graphs
-    #     hit_count = r['request_count'] - r['miss_count']
-    #     xx.append(r['stime'])
-    #
-    #     yy['request_count'].append(r['request_count'])
-    #     yy['miss_count'].append(r['miss_count'])
-    #     yy['hit_count'].append(hit_count)
-    #
-    #     # in MB, and the data in the db is in Bytes, so need to do the division
-    #     yy['cache_size'].append(r['size'] / (1024 * 1024))
-    #     yy['item_count'].append(r['item_count'])
-    #
-    # # plot the graphs, the plotted graphs will be shown in the page, and graphs are updated every 5 seconds, since new data will be pushed to the db every 5 seconds
-    # plots = {}
-    # for i, values in yy.items():
-    #     plots[i] = plot_graphs(xx, values, i)
-    #
-    # return render_template('cache_stats.html', cache_count_plot=plots['item_count'], cache_size_plot=plots['cache_size'],
-    #                        request_count_plot=plots['request_count'], hit_count_plot=plots['hit_count'], miss_count_plot=plots['miss_count'])
+
+    # get ready for plotting
+    xx = []
+    yy = {'item_count': [], 'request_count': [], 'hit_rate': [], 'miss_rate': [], 'cache_size': []}
+
+    j = {"metric": "num_items"}
+    res = requests.post(image_storage + '/cw_get', json=j)
+    res = res.json()
+    yy['item_count'].extent(res["values"])
+
+    j = {"metric": "num_requests"}
+    res = requests.post(image_storage + '/cw_get', json=j)
+    res = res.json()
+    yy['request_count'].extent(res["values"])
+
+    j = {"metric": "hit_rate"}
+    res = requests.post(image_storage + '/cw_get', json=j)
+    res = res.json()
+    yy['hit_rate'].extent(res["values"])
+
+    j = {"metric": "miss_rate"}
+    res = requests.post(image_storage + '/cw_get', json=j)
+    res = res.json()
+    yy['miss_rate'].extent(res["values"])
+
+    j = {"metric": "size_of_items"}
+    res = requests.post(image_storage + '/cw_get', json=j)
+    res = res.json()
+    yy['cache_size'].extent(res["values"])
+
+    # plot the graphs, the plotted graphs will be shown in the page, and graphs are updated every 5 seconds, since new data will be pushed to the db every 5 seconds
+    plots = {}
+    for i, values in yy.items():
+        plots[i] = plot_graphs(xx, values, i)
+
+    return render_template('cache_stats.html', cache_count_plot=plots['item_count'], cache_size_plot=plots['cache_size'], request_count_plot=plots['request_count'], hit_count_plot=plots['hit_rate'], miss_count_plot=plots['miss_rate'])
 
 @webapp.route('/memcache_config', methods=['GET', 'POST'])
 def memcache_config():
@@ -91,68 +110,66 @@ def memcache_config():
      in addition, the user can also clear the memcache, or clear all the data in the file system, database, and memcache
      (not including the history stats data and history config data in the db) """
 
-    # global cache_host
-    # cache_para = get_cache_parameter()
-    #
-    # if cache_para != None:
-    #     capacity = cache_para[2]
-    #     stra = cache_para[3]
-    # else:
-    #     # Cannot query db, set to default initial value
-    #     capacity = 12
-    #     stra = "LRU"
-    #
-    # if request.method == 'GET':
-    #     return render_template('memcache_config.html', capacity=capacity, strategy=stra)
-    #
-    # # POST, need to do some work
-    # else:
-    #     # if request to clear the cache
-    #     if request.form.get("clear_cache") != None:
-    #         requests.post(cache_host + '/clear')
-    #         return render_template('memcache_config.html', capacity=capacity, strategy=stra, status="mem_clear")
-    #
-    #     # else if request to clear ALL
-    #     elif request.form.get("clear_all") != None:
-    #         requests.post(cache_host + '/clear')
-    #
-    #         cfolder = requests.post(cache_host + '/refreshConfiguration')
-    #         cdb = requests.post(cache_host + '/refreshConfiguration')
-    #
-    #         return render_template('memcache_config.html', capacity=capacity, strategy=stra, status="all_clear")
-    #
-    #     # else, take the new cache parameters
-    #     else:
-    #         new_cap = request.form.get('capacity')
-    #         # log ##########################
-    #         # print(new_cap)
-    #
-    #         if new_cap.isdigit() and int(new_cap) <= 20:
-    #
-    #             strategy_selected = request.form.get('replacement_policy')
-    #             if strategy_selected == "Least Recently Used":
-    #                 new_strategy = "LRU"
-    #             else:
-    #                 new_strategy = "RR"
-    #
-    #             status = set_cache_parameter(new_cap, new_strategy)
-    #
-    #             # if successs
-    #             if status != None:
-    #                 res = requests.post(cache_host + '/refreshConfiguration')
-    #
-    #                 if res.json()['message'] == 'ok':
-    #                     return render_template('memcache_config.html', capacity=new_cap, strategy=new_strategy, status="suc")
-    #
-    #         # Error happen
-    #         return render_template('memcache_config.html', capacity=capacity, strategy=stra, status="fail")
+    global cache_host
+    cache_para = get_cache_parameter()
 
-@webapp.route('/clear', methods=['POST'])
-def clear():
-    for i in range(conf.active_node):
-        requests.post(conf.cache_pool[i] + '/clear')
+    if cache_para != None:
+        capacity = cache_para[2]
+        stra = cache_para[3]
+    else:
+        # Cannot query db, set to default initial value
+        capacity = 12
+        stra = "LRU"
 
-    return # render which page ###########
+    if request.method == 'GET':
+        return render_template('memcache_config.html', capacity=capacity, strategy=stra)
+
+    # POST, need to do some work
+    else:
+        # if request to clear the cache
+        if request.form.get("clear_cache") != None:
+            for i in range(conf.active_node):
+                requests.post(conf.cache_pool[i] + '/clear')
+
+            return render_template('memcache_config.html', capacity=capacity, strategy=stra, status="mem_clear")
+
+        # else if request to clear ALL
+        elif request.form.get("clear_all") != None:
+            for i in range(conf.active_node):
+                requests.post(conf.cache_pool[i] + '/clear')
+
+            requests.post(image_storage + '/delete_all')
+            return render_template('memcache_config.html', capacity=capacity, strategy=stra, status="all_clear")
+
+        # else, take the new cache parameters
+        else:
+            new_cap = request.form.get('capacity')
+            # log ##########################
+            # print(new_cap)
+
+            if new_cap.isdigit() and int(new_cap) <= 20:
+
+                strategy_selected = request.form.get('strategy')
+                if strategy_selected == "Least Recently Used":
+                    new_strategy = "LRU"
+                else:
+                    new_strategy = "RR"
+
+                status = set_cache_parameter(new_cap, new_strategy)
+
+                # if successs
+                if status != None:
+                    for i in range(conf.active_node):
+                        res = requests.post(conf.cache_pool[i] + '/refreshConfiguration')
+
+                        if res.json()['message'] != 'ok':
+                            return render_template('memcache_config.html', capacity=capacity, strategy=stra, status="fail")
+
+                    return render_template('memcache_config.html', capacity=new_cap, strategy=new_strategy, status="suc")
+
+            # Error happen
+            return render_template('memcache_config.html', capacity=capacity, strategy=stra, status="fail")
+
 
 @webapp.route('/get_key_list', methods=['POST'])
 def get_key_list():
@@ -161,8 +178,8 @@ def get_key_list():
     count = 0
 
     for i in range(conf.active_node):
-        re = requests.post(userApp + '/get_key_list')
-        re.json()
+        re = requests.post(conf.cache_pool[i] + '/get_key_list')
+        re = re.json()
 
         keyList.extend(re["keyList"])
         count += re["count"]
@@ -183,6 +200,7 @@ def get():
 
     j = {"key": key}
     res = requests.post(conf.cache_pool[target] + '/get', json=j)
+    res = res.json()
 
     return res
 
@@ -208,12 +226,14 @@ def invalidate():
     js = f.request.get_json(force=True)
     for i in range(conf.active_node):
         requests.post(conf.cache_pool[i] + '/invalidate', json=js)
-    return
+    return jsonify({
+                    "message": "success"
+                    })
 
 
 @webapp.route('/change_pool', methods=['GET', 'POST'])
 def change_pool():
-    update = request.form.get('pool_update')
+    update = f.request.get_json(force=True)["pool_update"]
 
     if update == '+':
         if pool_update_validate():
@@ -221,36 +241,70 @@ def change_pool():
     else:
         divide_node()
 
-    j = {"message": "Cache pool changed! Current num of active node: " + str(len(conf.active_node))}
+    j = {"node_num": conf.active_node}
     requests.post(userApp + '/cache_pool_change', json=j)
 
-@webapp.route('/manual_change_pool', methods=['GET', 'POST'])
-def manual_change_pool():
-    if request.form.get("add_node") != None:
-        re = add_node()
-    elif request.form.get("minus_node") != None:
-        re = minus_node()
+    return jsonify({
+        "message": "success"
+    })
 
-    j = {"message": "Cache pool changed! Current num of active node: " + str(len(conf.active_node))}
+@webapp.route('/pool_config', methods=['GET', 'POST'])
+def pool_config():
+    node_num = conf.active_node
+    mode = conf.mode
+
+    if request.method == 'GET':
+        return render_template('pool_config.html', node_num=node_num, mode=mode)
+
+    if request.form.get("option") != None:
+        mode = request.form.get("option")
+        if mode == 'A':
+            j = {"mode": 1}
+            conf.mode = 1
+            requests.post(autoscaler + '/toggle_mode', json=j)
+            return render_template('pool_config.html', node_num=node_num, mode=mode, mode_mes="suc")
+        elif mode == 'M':
+            j = {"mode": 0}
+            conf.mode = 0
+            requests.post(autoscaler + '/toggle_mode', json=j)
+            return render_template('pool_config.html', node_num=node_num, mode=mode, mode_mes="suc")
+        return render_template('pool_config.html', node_num=node_num, mode=mode, mode_mes="fail")
+
+    if request.form.get("increase_node") != None:
+        add_node()
+    elif request.form.get("decrease_node") != None:
+        minus_node()
+
+    j = {"node_num": conf.active_node}
     requests.post(userApp + '/cache_pool_change', json=j)
 
-    return render_template('memcache_config.html')
+    return render_template('pool_config.html', node_num=node_num, mode=mode, mes="suc")
 
-@webapp.route('/toggle_auto_mode', methods=['GET', 'POST'])
-def toggle_auto_mode():
-    if request.form.get("manual_mode") != None:
-        j = {"mode": 0}
-        requests.post(autoscaler + '/toggle_mode', json=j)
-    elif request.form.get("auto_mode") != None:
-        j = {"mode": 1}
-        requests.post(autoscaler + '/toggle_mode', json=j)
-
-@webapp.route('/clear_all', methods=['GET', 'POST'])
-def clear_all():
-    requests.post(image_storage + '/delete_all')
-    for i in range(conf.active_node):
-        requests.post(conf.cache_pool[i] + '/clear')
-
+# @webapp.route('/toggle_auto_mode', methods=['GET', 'POST'])
+# def toggle_auto_mode():
+#     if request.form.get("manual_mode") != None:
+#         j = {"mode": 0}
+#         conf.mode = 0
+#         requests.post(autoscaler + '/toggle_mode', json=j)
+#
+#     elif request.form.get("auto_mode") != None:
+#         j = {"mode": 1}
+#         conf.mode = 1
+#         requests.post(autoscaler + '/toggle_mode', json=j)
+#
+# @webapp.route('/clear_cache', methods=['GET', 'POST'])
+# def clear_cache():
+#     for i in range(conf.active_node):
+#         requests.post(conf.cache_pool[i] + '/clear')
+#     return # render page
+#
+# @webapp.route('/clear_all', methods=['GET', 'POST'])
+# def clear_all():
+#     requests.post(image_storage + '/delete_all')
+#     for i in range(conf.active_node):
+#         requests.post(conf.cache_pool[i] + '/clear')
+#     return # render page
+#
 
 
 
