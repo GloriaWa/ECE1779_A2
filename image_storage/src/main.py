@@ -98,11 +98,13 @@ def cw_put():
     j = {"success": "true"}
 
     # miss_rate, hit_rate, num_items, size_of_items, num_requests
-    miss_rate = request.form.get('miss_rate')
-    hit_rate = request.form.get('hit_rate')
-    num_items = request.form.get('num_items')
-    size_of_items = request.form.get('size_of_items')
-    num_requests = request.form.get('num_requests')
+    js = f.request.get_json(force=True)
+
+    miss_rate = js["miss_rate"]
+    hit_rate = js["hit_rate"]
+    num_items = js["num_items"]
+    size_of_items = js["size_of_items"]
+    num_requests = js["num_requests"]
 
     re = awsclient.cw_put(miss_rate, hit_rate, num_items, size_of_items, num_requests)
 
