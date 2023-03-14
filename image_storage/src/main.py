@@ -65,11 +65,11 @@ def write():
         print(filename)
         print(file)
 
-        re = rds_write(key, filename)
+        re = rds_write(key, key)
         if re != "success":
             j = {"success": "false", "error": {"code": "servererrorcode", "message": re}}
         else:
-            awsclient.s3_write(file, filename)
+            awsclient.s3_write(file, key)
         return jsonify(j)
     except:
         j = {"success": "false", "error": {"code": "servererrorcode", "message": "image storage write fail"}}
