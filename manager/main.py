@@ -120,7 +120,7 @@ def memcache_config():
     cache_para = get_cache_parameter()
 
     if cache_para != None:
-        capacity = cache_para[2]
+        capacity = int(cache_para[2])
         stra = cache_para[3]
     else:
         # Cannot query db, set to default initial value
@@ -161,12 +161,12 @@ def memcache_config():
                 else:
                     new_strategy = "RR"
 
-                status = set_cache_parameter(new_cap, new_strategy)
+                status = set_cache_parameter(int(new_cap), new_strategy)
 
                 # if successs
                 if status != None:
                     for i in range(conf.active_node):
-                        j = {"size": new_cap, "strategy": new_strategy}
+                        j = {"size": int(new_cap), "strategy": new_strategy}
                         res = requests.post(conf.cache_pool[i] + '/refreshConfiguration', json=j)
 
                         if res.json()['message'] != 'ok':
