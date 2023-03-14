@@ -179,7 +179,7 @@ def get_key_list():
     count = 0
 
     for i in range(conf.active_node):
-        re = requests.post(userApp + '/get_key_list')
+        re = requests.post(conf.cache_pool[i] + '/get_key_list')
         re = re.json()
 
         keyList.extend(re["keyList"])
