@@ -57,7 +57,10 @@ def read(key):
 def write():
     try:
         j = {"success": "true"}
-        key = request.form.get('key')
+
+        js = f.request.get_json(force=True)
+        key = js["key"]
+
         file = request.files['file']
         filename = file.filename
         re = rds_write(key, filename)
