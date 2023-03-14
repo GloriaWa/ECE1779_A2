@@ -116,7 +116,9 @@ def cw_put():
 
 @storageApp.route('/cw_get', methods=['POST'])
 def cw_get():
-    metric = request.form.get('metric')
+    js = f.request.get_json(force=True)
+    metric = js["metric"]
+
     re = awsclient.cw_get(metric)
 
     j = {"success": "true"}
