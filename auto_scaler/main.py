@@ -19,7 +19,8 @@ def initial_settings():
 def toggle_mode():
     global auto
 
-    mode = request.form.get('mode')
+    js = f.request.get_json(force=True)
+    mode = js["mode"]
     auto = mode
     return jsonify({
         "message": "success",

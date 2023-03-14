@@ -120,8 +120,8 @@ def cw_get():
     metric = js["metric"]
 
     re = awsclient.cw_get(metric)
-    print("img stor: ")
-    print(re)
+    # print("img stor: ")
+    # print(re)
 
     j = {"success": "true"}
     return jsonify({"success": "true", "values": re})

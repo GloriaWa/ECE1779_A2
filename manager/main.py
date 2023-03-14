@@ -98,8 +98,8 @@ def cache_stats():
     yy['cache_size'] = res["values"].copy()
 
     xx = [i for i in range(len(yy['item_count']))]
-    print(xx)
-    print(yy['item_count'])
+    # print(xx)
+    # print(yy['item_count'])
 
     # plot the graphs, the plotted graphs will be shown in the page, and graphs are updated every 5 seconds, since new data will be pushed to the db every 5 seconds
     plots = {}
@@ -255,11 +255,9 @@ def change_pool():
 
 @webapp.route('/pool_config', methods=['GET', 'POST'])
 def pool_config():
-    node_num = conf.active_node
-    mode = conf.mode
 
     if request.method == 'GET':
-        return render_template('pool_config.html', node_num=node_num, mode=mode)
+        return render_template('pool_config.html', node_num=conf.active_node, mode=conf.mode)
 
     if request.form.get("option") != None:
         mode = request.form.get("option")
@@ -267,13 +265,13 @@ def pool_config():
             j = {"mode": 1}
             conf.mode = 1
             requests.post(autoscaler + '/toggle_mode', json=j)
-            return render_template('pool_config.html', node_num=node_num, mode=mode, mode_mes="suc")
+            return render_template('pool_config.html', node_num=conf.active_node, mode=conf.mode, mode_mes="suc")
         elif mode == 'M':
             j = {"mode": 0}
             conf.mode = 0
             requests.post(autoscaler + '/toggle_mode', json=j)
-            return render_template('pool_config.html', node_num=node_num, mode=mode, mode_mes="suc")
-        return render_template('pool_config.html', node_num=node_num, mode=mode, mode_mes="fail")
+            return render_template('pool_config.html', node_num=conf.active_node, mode=conf.mode, mode_mes="suc")
+        return render_template('pool_config.html', node_num=conf.active_node, mode=conf.mode, mode_mes="fail")
 
     if request.form.get("increase_node") != None:
         add_node()
@@ -283,7 +281,7 @@ def pool_config():
     j = {"node_num": conf.active_node}
     requests.post(userApp + '/cache_pool_change', json=j)
 
-    return render_template('pool_config.html', node_num=node_num, mode=mode, mes="suc")
+    return render_template('pool_config.html', node_num=conf.active_node, mode=conf.mode, mes="suc")
 
 # @webapp.route('/toggle_auto_mode', methods=['GET', 'POST'])
 # def toggle_auto_mode():
