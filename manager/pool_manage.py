@@ -14,7 +14,7 @@ def pool_update_validate():
     # Check if at least one of the cache node is full, else, add node request invalid
 
     for i in range(conf.active_node):
-        re = requests.post(conf.active_node[i] + '/get_key_list')
+        re = requests.post(conf.cache_pool[i] + '/get_key_list')
         re.json()
 
         count = re["count"]

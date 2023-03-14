@@ -31,7 +31,7 @@ def pollStatus():
 
         for i in range(conf.active_node):
             res = requests.post(conf.cache_pool[i] + '/stats')
-            print(conf.cache_pool[i]+ '/stats')
+            # print(conf.cache_pool[i]+ '/stats')
 
             res = res.json()
 
