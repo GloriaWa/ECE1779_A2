@@ -200,6 +200,7 @@ def get():
 
     j = {"key": key}
     res = requests.post(conf.cache_pool[target] + '/get', json=j)
+    res = res.json()
 
     return res
 

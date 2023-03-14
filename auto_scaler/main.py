@@ -21,7 +21,9 @@ def toggle_mode():
 
     mode = request.form.get('mode')
     auto = mode
-    return
+    return jsonify({
+        "message": "success",
+    })
 
 def check():
     global auto
