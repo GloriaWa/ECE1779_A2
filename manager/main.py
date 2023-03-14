@@ -102,8 +102,7 @@ def cache_stats():
     for i, values in yy.items():
         plots[i] = plot_graphs(xx, values, i)
 
-    return render_template('cache_stats.html', cache_count_plot=plots['item_count'], cache_size_plot=plots['cache_size'],
-                           request_count_plot=plots['request_count'], hit_count_plot=plots['hit_rate'], miss_count_plot=plots['miss_rate'])
+    return render_template('cache_stats.html', cache_count_plot=plots['item_count'], cache_size_plot=plots['cache_size'], request_count_plot=plots['request_count'], hit_count_plot=plots['hit_rate'], miss_count_plot=plots['miss_rate'])
 
 @webapp.route('/memcache_config', methods=['GET', 'POST'])
 def memcache_config():
@@ -243,7 +242,7 @@ def change_pool():
 
     j = {"node_num": conf.active_node}
     requests.post(userApp + '/cache_pool_change', json=j)
-    
+
     return jsonify({
         "message": "success"
     })

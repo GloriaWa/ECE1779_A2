@@ -72,8 +72,8 @@ def show_image():
             res = requests.post(cache_pool_host + '/get', json=j)
         except requests.ConnectionError:
             return render_template('show_image.html', exists=False, img="error connecting cache pool")
-        res = res.json()
 
+        res = res.json()
         if res['message'] == 'miss':
             try:
                 re = requests.post(image_storage + "/read/" + key)
