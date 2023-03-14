@@ -31,6 +31,8 @@ def pollStatus():
 
         for i in range(conf.active_node):
             res = requests.post(conf.cache_pool[i] + '/stats')
+            print(conf.cache_pool[i]+ '/stats')
+
             res = res.json()
 
             item_count += res["item_count"]
@@ -265,7 +267,7 @@ def pool_config():
             j = {"mode": 1}
             conf.mode = 1
             res = requests.post(autoscaler + '/toggle_mode', json=j)
-            
+
             res = res.json()
             print(res)
 
