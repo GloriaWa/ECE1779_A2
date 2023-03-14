@@ -75,27 +75,27 @@ def cache_stats():
     j = {"metric": "num_items"}
     res = requests.post(image_storage + '/cw_get', json=j)
     res = res.json()
-    yy['item_count'].extent(res["values"])
+    yy['item_count'].extend(res["values"])
 
     j = {"metric": "num_requests"}
     res = requests.post(image_storage + '/cw_get', json=j)
     res = res.json()
-    yy['request_count'].extent(res["values"])
+    yy['request_count'].extend(res["values"])
 
     j = {"metric": "hit_rate"}
     res = requests.post(image_storage + '/cw_get', json=j)
     res = res.json()
-    yy['hit_rate'].extent(res["values"])
+    yy['hit_rate'].extend(res["values"])
 
     j = {"metric": "miss_rate"}
     res = requests.post(image_storage + '/cw_get', json=j)
     res = res.json()
-    yy['miss_rate'].extent(res["values"])
+    yy['miss_rate'].extend(res["values"])
 
     j = {"metric": "size_of_items"}
     res = requests.post(image_storage + '/cw_get', json=j)
     res = res.json()
-    yy['cache_size'].extent(res["values"])
+    yy['cache_size'].extend(res["values"])
 
     # plot the graphs, the plotted graphs will be shown in the page, and graphs are updated every 5 seconds, since new data will be pushed to the db every 5 seconds
     plots = {}
