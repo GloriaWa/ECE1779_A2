@@ -1,11 +1,12 @@
 from image_storage.src.MySQLconnect import *
 from image_storage.src.awsclient import *
 import base64
+import boto3
 
 
 def db_status():
     try:
-        client = boto3.client('rds')
+        client = boto3.client('rds', region_name='us-east-1')
         response = client.describe_db_instances()
         instance_status = {}
         for resp in response['DBInstances']:
@@ -23,7 +24,7 @@ def create_db():
     if status != "not created":
         return "DB already exit, Status is " + status
 
-    client = boto3.client('rds')
+    client = boto3.client('rds', region_name='us-east-1')
     response = client.create_db_instance(
         AllocatedStorage=5,
         DBInstanceClass='db.t2.micro',
@@ -40,7 +41,7 @@ def stop_db():
     status = db_status()
     if status != "available":
         return "DB Status error, Status is " + status
-    client = boto3.client('rds')
+    client = boto3.client('rds', region_name='us-east-1')
     response = client.stop_db_instance(
         DBInstanceIdentifier=db_name,
     )
@@ -52,7 +53,7 @@ def start_db():
     if status != "stopped":
         return "DB Status error, Status is " + status
 
-    client = boto3.client('rds')
+    client = boto3.client('rds', region_name='us-east-1')
     response = client.start_db_instance(
         DBInstanceIdentifier=db_name
     )
@@ -63,7 +64,7 @@ def delete_db():
     status = db_status()
     if status == "not created" or "deleting":
         return "DB Status error, Status is " + status
-    client = boto3.client('rds')
+    client = boto3.client('rds', region_name='us-east-1')
     response = client.delete_db_instance(
         DBInstanceIdentifier=db_name,
         SkipFinalSnapshot=True,

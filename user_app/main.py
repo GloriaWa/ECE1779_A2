@@ -8,16 +8,16 @@ from host_map import *
 EXT = {'.png', '.jpg', '.jpeg', '.gif', '.ico'}
 
 
-@webapp.before_first_request
-def initial_settings():
-    try:
-        re = requests.post(image_storage + "/test")
-        re = re.json()
-        if re["message"] != "success":
-            print(re["message"])
-            # sys.exit()
-    except requests.ConnectionError as e:
-        print(e)
+# @webapp.before_first_request
+# def initial_settings():
+#     try:
+#         re = requests.post(image_storage + "/test")
+#         re = re.json()
+#         if re["message"] != "success":
+#             print(re["message"])
+#             # sys.exit()
+#     except requests.ConnectionError as e:
+#         print(e)
 
 
 @webapp.route('/')
