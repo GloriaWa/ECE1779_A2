@@ -4,7 +4,7 @@ import time
 import requests
 from flask import request, jsonify
 import flask as f
-from user_app import webapp
+from auto_scaler import webapp
 
 from host_map import *
 
@@ -16,7 +16,7 @@ def initial_settings():
     t = threading.Thread(target=check)
     t.start()
 
-@webapp.route('/toggle_mode', methods=['POST'])
+@webapp.route('/toggle_mode', methods=['POST', 'GET'])
 def toggle_mode():
     global auto
 

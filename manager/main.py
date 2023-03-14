@@ -264,12 +264,16 @@ def pool_config():
         if mode == "1":
             j = {"mode": 1}
             conf.mode = 1
-            requests.post(autoscaler + '/toggle_mode', json=j)
+            res = requests.post(autoscaler + '/toggle_mode', json=j)
+            
+            res = res.json()
+            print(res)
+
             return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mode_mes="suc")
         elif mode == "0":
             j = {"mode": 0}
             conf.mode = 0
-            requests.post(autoscaler + '/toggle_mode', json=j)
+            res = requests.post(autoscaler + '/toggle_mode', json=j)
             return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mode_mes="suc")
         return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mode_mes="fail")
 
