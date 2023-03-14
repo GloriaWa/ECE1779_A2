@@ -270,9 +270,9 @@ def pool_config():
         return render_template('pool_config.html', node_num=node_num, mode=mode, mode_mes="fail")
 
     if request.form.get("increase_node") != None:
-        re = add_node()
+        add_node()
     elif request.form.get("decrease_node") != None:
-        re = minus_node()
+        minus_node()
 
     j = {"node_num": conf.active_node}
     requests.post(userApp + '/cache_pool_change', json=j)
