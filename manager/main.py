@@ -98,6 +98,8 @@ def cache_stats():
     yy['cache_size'].extend(res["values"])
 
     xx = [i for i in range(len(yy['item_count']))]
+    print(xx)
+    print(yy)
 
     # plot the graphs, the plotted graphs will be shown in the page, and graphs are updated every 5 seconds, since new data will be pushed to the db every 5 seconds
     plots = {}
