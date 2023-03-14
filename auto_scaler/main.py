@@ -3,6 +3,7 @@ import threading
 import time
 import requests
 from flask import request, jsonify
+import flask as f
 from user_app import webapp
 
 from host_map import *
@@ -21,6 +22,8 @@ def toggle_mode():
 
     js = f.request.get_json(force=True)
     mode = js["mode"]
+    print(mode)
+
     auto = mode
     return jsonify({
         "message": "success",
@@ -33,6 +36,8 @@ def check():
         if auto == 1:
             j = {"metric": "miss_rate"}
             res = requests.post(image_storage + '/cw_get', json=j)
+            res = res.json()
+
             miss = res['values'][-1]
 
             if miss > 0.5:
