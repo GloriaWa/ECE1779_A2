@@ -15,7 +15,7 @@ def pool_update_validate():
 
     for i in range(conf.active_node):
         re = requests.post(conf.cache_pool[i] + '/get_key_list')
-        re.json()
+        re = re.json()
 
         count = re["count"]
 
