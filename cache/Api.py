@@ -1,5 +1,5 @@
 import flask as f
-import OriginalCacheWrapper as Cache
+import cache.OriginalCacheWrapper as Cache
 
 from cache import backendApp
 from flask import jsonify
