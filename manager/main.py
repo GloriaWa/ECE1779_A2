@@ -72,12 +72,12 @@ def cache_stats():
     # xx = []
     yy = {}
 
-    j = {"metric": "num_items"}
+    j = {"metric": "number_of_items_in_cache"}
     res = requests.post(image_storage + '/cw_get', json=j)
     res = res.json()
     yy['item_count'] = res["values"].copy()
 
-    j = {"metric": "num_requests"}
+    j = {"metric": "number_of_request_per_second"}
     res = requests.post(image_storage + '/cw_get', json=j)
     res = res.json()
     yy['request_count'] = res["values"].copy()
@@ -92,12 +92,12 @@ def cache_stats():
     res = res.json()
     yy['miss_rate'] = res["values"].copy()
 
-    j = {"metric": "size_of_items"}
+    j = {"metric": "total_size_of_items_in_cache"}
     res = requests.post(image_storage + '/cw_get', json=j)
     res = res.json()
     yy['cache_size'] = res["values"].copy()
 
-    xx = [i for i in range(30)]
+    xx = [i for i in range(len(yy['item_count']))]
     print(xx)
     print(yy['item_count'])
 
