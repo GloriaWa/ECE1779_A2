@@ -12,7 +12,7 @@
         <div><p>
             <label>Current resizing option:<b> {{mode}} </b></label>
             <br><label>Number of active nodes: <b>{{node_num}}</b></label>
-            {% if mode == 0 %}
+            {% if mode == "0" %}
                 <form method="post">
                     <input name="increase_node" style="visibility: collapse; height: 0px; width: 1px">
                     <input id="increase_node" type="submit" class="button" value="increase node by 1">
@@ -38,11 +38,11 @@
                 <label><b>Configure resizing option: </b></label>
                 <div>
                     <label for="A">Automatic resizing (1)</label>
-                    <input id="A" name="option" value=1 type="radio" checked>
+                    <input id="A" name="option" value="1" type="radio" checked>
                 </div>
                 <div>
                     <label for="M">Manual resizing (0)</label>
-                    <input type="radio" id="M" name="option" value=0>
+                    <input type="radio" id="M" name="option" value="0">
                 </div>
 
                 <input id="submit" type="submit" class="button" value="Reconfigure">

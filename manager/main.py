@@ -257,21 +257,21 @@ def change_pool():
 def pool_config():
 
     if request.method == 'GET':
-        return render_template('pool_config.html', node_num=conf.active_node, mode=conf.mode)
+        return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode))
 
     if request.form.get("option") != None:
         mode = request.form.get("option")
-        if mode == 1:
+        if mode == "1":
             j = {"mode": 1}
             conf.mode = 1
             requests.post(autoscaler + '/toggle_mode', json=j)
-            return render_template('pool_config.html', node_num=conf.active_node, mode=conf.mode, mode_mes="suc")
-        elif mode == 0:
+            return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mode_mes="suc")
+        elif mode == "0":
             j = {"mode": 0}
             conf.mode = 0
             requests.post(autoscaler + '/toggle_mode', json=j)
-            return render_template('pool_config.html', node_num=conf.active_node, mode=conf.mode, mode_mes="suc")
-        return render_template('pool_config.html', node_num=conf.active_node, mode=conf.mode, mode_mes="fail")
+            return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mode_mes="suc")
+        return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mode_mes="fail")
 
     if request.form.get("increase_node") != None:
         add_node()
@@ -281,7 +281,7 @@ def pool_config():
     j = {"node_num": conf.active_node}
     requests.post(userApp + '/cache_pool_change', json=j)
 
-    return render_template('pool_config.html', node_num=conf.active_node, mode=conf.mode, mes="suc")
+    return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mes="suc")
 
 # @webapp.route('/toggle_auto_mode', methods=['GET', 'POST'])
 # def toggle_auto_mode():
