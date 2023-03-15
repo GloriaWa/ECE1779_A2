@@ -5,6 +5,15 @@
     <title>A2</title>
 </head>
 <body>
-  <h2>Cache Pool Siza Changed!</h2>
+  <h2>Cache Pool Size Changed History</h2>
+
+    {% if history is defined %}
+        <table>
+        {% for h in history %}
+            <tr><td>{{ h }}</td></tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+
 </body>
 </html>

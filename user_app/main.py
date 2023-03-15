@@ -4,9 +4,10 @@ import flask as f
 from flask import render_template, request, jsonify, redirect
 from user_app import webapp
 from host_map import *
+from datetime import datetime
 
 EXT = {'.png', '.jpg', '.jpeg', '.gif', '.ico'}
-
+history = []
 
 # @webapp.before_first_request
 # def initial_settings():
@@ -133,14 +134,21 @@ def key_list():
 @webapp.route('/cache_pool_change', methods=['GET', 'POST'])
 def cache_pool_change():
     # node_num
-    node_num = f.request.get_json(force=True)["node_num"]
-    return redirect(userApp + '/home', code=302)
+    global history
 
+    node_num = f.request.get_json(force=True)["node_num"]
+    print("Cache Pool Size Changed! Now: " + str(node_num) + " Cache Nodes In The Pool")
+
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+
+    history.append("Node Num. " + str(node_num) + ", at " + str(current_time))
+    # return redirect(userApp + '/home', code=302)
     # render_template("home.html", node_num=node_num)
-    #
-    # return jsonify({
-    #     "success":"true"
-    # })
+
+    return jsonify({
+        "success":"true"
+    })
 
 # ________________________auto test api _________________________
 # @webapp.route('/api/delete_all', methods=['POST'])
