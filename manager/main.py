@@ -49,14 +49,16 @@ def pollStatus():
         j = {"active_node": conf.active_node, "miss_rate": miss_rate, "hit_rate": hit_rate, "num_items": item_count,"size_of_items": size / (1024 * 1024), "num_requests": request_count}
         re = requests.post(image_storage + '/cw_put', json=j)
 
-        if clear_count < 12:
-            clear_count += 1
-        else:
-            clear_count = 0
-            for i in range(conf.active_node):
-                res = requests.post(conf.cache_pool[i] + '/clear_record')
+        # if clear_count < 12:
+        #     clear_count += 1
+        # else:
+        #     clear_count = 0
+        #     for i in range(conf.active_node):
+        #         res = requests.post(conf.cache_pool[i] + '/clear_record')
 
-        time.sleep(5)
+        for i in range(conf.active_node):
+            res = requests.post(conf.cache_pool[i] + '/clear_record')
+        time.sleep(60)
 
 @webapp.teardown_appcontext
 def teardown_db(exception):
