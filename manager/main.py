@@ -48,7 +48,7 @@ def pollStatus():
 
         j = {"miss_rate": miss_rate, "hit_rate": hit_rate, "num_items": item_count,"size_of_items": size / (1024 * 1024), "num_requests": request_count}
         re = requests.post(image_storage + '/cw_put', json=j)
-        time.sleep(5)
+        time.sleep(60)
 
 @webapp.teardown_appcontext
 def teardown_db(exception):
