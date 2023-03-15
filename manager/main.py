@@ -293,6 +293,13 @@ def pool_config():
     elif request.form.get("decrease_node") != None:
         minus_node()
 
+
+
+
+
+
+
+
     j = {"node_num": conf.active_node}
     requests.post(userApp + '/cache_pool_change', json=j)
 
@@ -353,7 +360,7 @@ def getRate():
 @webapp.route('/api/configure_cache', methods=['POST'])
 def configCache():
     args = request.args
-    print(args)
+    # print(args)
 
     mode = args.get('mode')
     numNodes = args.get('numNodes')
@@ -405,12 +412,10 @@ def configCache():
 
     if expRatio != None:
         conf.Ratio_expand_pool = float(expRatio)
-        print("EEEEEEEEEEEEEEEEEEEEEEE" + str(conf.Ratio_expand_pool))
         all_json["expRatio"] = expRatio
 
     if shrinkRatio != None:
         conf.Ratio_shrink_pool = float(shrinkRatio)
-        print("SSSSSSSSSSSSSSSSSSSS" + str(conf.Ratio_shrink_pool))
         all_json["shrinkRatio"] = shrinkRatio
 
     if maxMiss != None:

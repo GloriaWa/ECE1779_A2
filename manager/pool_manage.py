@@ -79,7 +79,7 @@ def divide_node():
     print(conf.Ratio_shrink_pool)
 
     conf.active_node = int(conf.active_node)
-    new_pool = max(conf.active_node // conf.Ratio_shrink_pool, 1)
+    new_pool = max(conf.active_node * conf.Ratio_shrink_pool, 1)
 
     id = []
     img = []
