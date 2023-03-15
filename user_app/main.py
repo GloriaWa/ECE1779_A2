@@ -1,7 +1,7 @@
 import sys, os
 import requests
 import flask as f
-from flask import render_template, request, jsonify, flash
+from flask import render_template, request, jsonify, redirect
 from user_app import webapp
 from host_map import *
 
@@ -134,7 +134,13 @@ def key_list():
 def cache_pool_change():
     # node_num
     node_num = f.request.get_json(force=True)["node_num"]
-    render_template("home.html", node_num=node_num)
+    return redirect(userApp + '/pool_change', code=302)
+
+    # render_template("home.html", node_num=node_num)
+    #
+    # return jsonify({
+    #     "success":"true"
+    # })
 
 # ________________________auto test api _________________________
 # @webapp.route('/api/delete_all', methods=['POST'])
