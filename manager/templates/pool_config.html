@@ -22,15 +22,6 @@
                     <input id="decrease_node" type="submit" class="button" value="reduce node by 1">
                 </form>
             {% endif %}
-            <div>
-            {% if mes is defined %}
-                {% if mes == "fail" %}
-                    <h4 >node number reconfiguration fail</h4>
-                {% elif mes == "suc" %}
-                    <h4 >Node pool reconfigured success</h4>
-                {% endif %}
-            {% endif %}
-            </div>
         </p></div>
 
         <div>
@@ -47,38 +38,56 @@
 
                 <input id="submit" type="submit" class="button" value="Reconfigure">
             </form>
-            <div>
-            {% if mode_mes is defined %}
-                {% if mode_mes == "fail" %}
-                    <h4 >Fail to set resizing mode</h4>
-                {% elif mode_mes == "suc" %}
-                    <h4 >Success to set resizing mode</h4>
-                {% endif %}
-            {% endif %}
-            </div>
         </div>
 
         <form method="post">
             <label><b>Configure resizing option: </b></label>
             <div>
                 <label for="Max_MR_threshold">Max MissRate Threshold</label>
-                <input id="Max_MR_threshold" name="Max_MR_threshold" type="text"  value="0.5">
+                <input id="Max_MR_threshold" name="Max_MR_threshold" type="text"  value="{{ Max_MR_threshold }}">
             </div>
+            <br>
+
             <div>
                 <label for="Min_MR_threshold">Min MissRate Threshold</label>
-                <input id="Min_MR_threshold" name="Min_MR_threshold" type="text"  value="0.1">
+                <input id="Min_MR_threshold" name="Min_MR_threshold" type="text"  value="{{ Min_MR_threshold }}">
             </div>
+            <br>
+
             <div>
                 <label for="Ratio_expand_pool">Ratio To Expand The Pool</label>
-                <input id="Ratio_expand_pool" name="Ratio_expand_pool" type="text"  value="2.0">
+                <input id="Ratio_expand_pool" name="Ratio_expand_pool" type="text"  value="{{ Ratio_expand_pool }}">
             </div>
+            <br>
+
             <div>
                 <label for="Ratio_shrink_pool">Ratio To Shrink The Pool</label>
-                <input id="Ratio_shrink_pool" name="Ratio_shrink_pool" type="text"  value="0.5">
+                <input id="Ratio_shrink_pool" name="Ratio_shrink_pool" type="text"  value="{{ Ratio_shrink_pool }}">
             </div>
+            <br>
 
             <input id="submit_para" type="submit" class="button" value="Reconfigure Auto Mode Parameters">
         </form>
+
+        <div>
+        {% if mes is defined %}
+            {% if mes == "fail" %}
+                <h4 >node number reconfiguration fail</h4>
+            {% elif mes == "suc" %}
+                <h4 >Node pool reconfigured success</h4>
+            {% endif %}
+        {% endif %}
+        </div>
+
+        <div>
+        {% if mode_mes is defined %}
+            {% if mode_mes == "fail" %}
+                <h4 >Fail to set resizing mode</h4>
+            {% elif mode_mes == "suc" %}
+                <h4 >Success to set resizing mode</h4>
+            {% endif %}
+        {% endif %}
+        </div>
 
 </body>
 </html>

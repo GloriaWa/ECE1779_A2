@@ -273,7 +273,7 @@ def change_pool():
 def pool_config():
 
     if request.method == 'GET':
-        return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode))
+        return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), Max_MR_threshold=conf.Max_MR_threshold, Min_MR_threshold=conf.Min_MR_threshold, Ratio_expand_pool=conf.Ratio_expand_pool, Ratio_shrink_pool=conf.Ratio_shrink_pool)
 
     if request.form.get("option") != None:
         mode = request.form.get("option")
@@ -285,13 +285,13 @@ def pool_config():
             res = res.json()
             print(res)
 
-            return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mode_mes="suc")
+            return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mode_mes="suc", Max_MR_threshold=conf.Max_MR_threshold, Min_MR_threshold=conf.Min_MR_threshold, Ratio_expand_pool=conf.Ratio_expand_pool, Ratio_shrink_pool=conf.Ratio_shrink_pool)
         elif mode == "0":
             j = {"mode": 0}
             conf.mode = 0
             res = requests.post(autoscaler + '/toggle_mode', json=j)
-            return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mode_mes="suc")
-        return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mode_mes="fail")
+            return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mode_mes="suc", Max_MR_threshold=conf.Max_MR_threshold, Min_MR_threshold=conf.Min_MR_threshold, Ratio_expand_pool=conf.Ratio_expand_pool, Ratio_shrink_pool=conf.Ratio_shrink_pool)
+        return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mode_mes="fail", Max_MR_threshold=conf.Max_MR_threshold, Min_MR_threshold=conf.Min_MR_threshold, Ratio_expand_pool=conf.Ratio_expand_pool, Ratio_shrink_pool=conf.Ratio_shrink_pool)
 
     if request.form.get("increase_node") != None:
         add_node()
@@ -301,19 +301,15 @@ def pool_config():
 
     if request.form.get("Max_MR_threshold") != None:
         conf.Max_MR_threshold = float(request.form.get("Max_MR_threshold"))
-        print(1)
 
     if request.form.get("Min_MR_threshold") != None:
         conf.Min_MR_threshold = float(request.form.get("Min_MR_threshold"))
-        print(2)
 
     if request.form.get("Ratio_expand_pool") != None:
         conf.Ratio_expand_pool = float(request.form.get("Ratio_expand_pool"))
-        print(3)
 
     if request.form.get("Ratio_shrink_pool") != None:
         conf.Ratio_shrink_pool = float(request.form.get("Ratio_shrink_pool"))
-        print(4)
 
         j = {"Max_MR_threshold": conf.Max_MR_threshold, "Min_MR_threshold": conf.Min_MR_threshold}
         res = requests.post(autoscaler + '/set_thresh', json=j)
@@ -321,7 +317,7 @@ def pool_config():
     j = {"node_num": conf.active_node}
     requests.post(userApp + '/cache_pool_change', json=j)
 
-    return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mes="suc")
+    return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mes="suc", Max_MR_threshold=conf.Max_MR_threshold, Min_MR_threshold=conf.Min_MR_threshold, Ratio_expand_pool=conf.Ratio_expand_pool, Ratio_shrink_pool=conf.Ratio_shrink_pool)
 
 # ########### add buttons
 @webapp.route('/set_paras', methods=['GET', 'POST'])
