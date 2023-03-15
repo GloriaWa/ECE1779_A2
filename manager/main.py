@@ -85,7 +85,7 @@ def cache_stats():
     j = {"metric": "number_of_active_node"}
     res = requests.post(image_storage + '/cw_get', json=j)
     res = res.json()
-    print(res)
+    # print(res)
     yy['active_node'] = res["values"].copy()
 
     j = {"metric": "number_of_items_in_cache"}
