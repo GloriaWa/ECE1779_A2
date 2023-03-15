@@ -29,6 +29,8 @@ def pool_update_validate():
     return False
 
 def set_node(num):
+    num = int(num)
+
     if num < 1 or num > 8:
         return "fail"
 

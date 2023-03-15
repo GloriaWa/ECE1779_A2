@@ -354,6 +354,7 @@ def getRate():
 def configCache():
     args = request.args
     print(args)
+
     mode = args.get('mode')
     numNodes = args.get('numNodes')
     cacheSize = args.get('cacheSize')
@@ -421,6 +422,7 @@ def configCache():
     j = {"Max_MR_threshold": conf.Max_MR_threshold, "Min_MR_threshold": conf.Min_MR_threshold}
     res = requests.post(autoscaler + '/set_thresh', json=j)
 
+    print(all_json)
     return jsonify(all_json)
 
 @webapp.route('/api/delete_all', methods=['POST'])
