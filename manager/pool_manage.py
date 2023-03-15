@@ -53,7 +53,7 @@ def set_node(num):
 
 def double_node():
     # Double the node
-    print(conf.Ratio_expand_pool)
+    # print(conf.Ratio_expand_pool)
 
     conf.active_node = int(conf.active_node)
     new_pool = min(conf.Ratio_expand_pool * conf.active_node, 8)
@@ -76,7 +76,7 @@ def double_node():
 
 def divide_node():
     # Divide the node num by two
-    print(conf.Ratio_shrink_pool)
+    # print(conf.Ratio_shrink_pool)
 
     conf.active_node = int(conf.active_node)
     new_pool = max(conf.active_node * conf.Ratio_shrink_pool, 1)
