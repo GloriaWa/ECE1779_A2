@@ -46,7 +46,7 @@ def pollStatus():
             miss_rate = miss_count / request_count
             hit_rate = 1 - miss_rate
 
-        j = {"active_node": conf.active_node,"miss_rate": miss_rate, "hit_rate": hit_rate, "num_items": item_count,"size_of_items": size / (1024 * 1024), "num_requests": request_count}
+        j = {"active_node": conf.active_node, "miss_rate": miss_rate, "hit_rate": hit_rate, "num_items": item_count,"size_of_items": size / (1024 * 1024), "num_requests": request_count}
         re = requests.post(image_storage + '/cw_put', json=j)
 
         if clear_count < 12:
@@ -85,6 +85,7 @@ def cache_stats():
     j = {"metric": "number_of_active_node"}
     res = requests.post(image_storage + '/cw_get', json=j)
     res = res.json()
+    print(res)
     yy['active_node'] = res["values"].copy()
 
     j = {"metric": "number_of_items_in_cache"}
@@ -119,6 +120,7 @@ def cache_stats():
     # plot the graphs, the plotted graphs will be shown in the page, and graphs are updated every 5 seconds, since new data will be pushed to the db every 5 seconds
     plots = {}
     for i, values in yy.items():
+        print("here + " + str(i))
         plots[i] = plot_graphs(xx, values, i)
 
     return render_template('cache_stats.html', active_node_plot=plots['active_node'],cache_count_plot=plots['item_count'], cache_size_plot=plots['cache_size'], request_count_plot=plots['request_count'], hit_count_plot=plots['hit_rate'], miss_count_plot=plots['miss_rate'])
@@ -283,7 +285,7 @@ def pool_config():
             res = requests.post(autoscaler + '/toggle_mode', json=j)
 
             res = res.json()
-            print(res)
+            # print(res)
 
             return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mode_mes="suc", Max_MR_threshold=conf.Max_MR_threshold, Min_MR_threshold=conf.Min_MR_threshold, Ratio_expand_pool=conf.Ratio_expand_pool, Ratio_shrink_pool=conf.Ratio_shrink_pool)
         elif mode == "0":
@@ -347,7 +349,7 @@ def getNumNodes():
 def getRate():
     args = request.args
     rate = args.get('rate')
-    print(rate)
+    # print(rate)
 
     if rate == "miss":
         j = {"metric": "miss_rate"}
@@ -443,7 +445,7 @@ def configCache():
     j = {"Max_MR_threshold": conf.Max_MR_threshold, "Min_MR_threshold": conf.Min_MR_threshold}
     res = requests.post(autoscaler + '/set_thresh', json=j)
 
-    print(all_json)
+    # print(all_json)
     return jsonify(all_json)
 
 @webapp.route('/api/delete_all', methods=['POST'])

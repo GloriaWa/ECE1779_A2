@@ -40,8 +40,8 @@ def set_thresh():
     Max_MR_threshold = js["Max_MR_threshold"]
     Min_MR_threshold = js["Min_MR_threshold"]
 
-    print("set thresh, Max_MR"+str(Max_MR_threshold))
-    print("set thresh, Min_MR"+str(Min_MR_threshold))
+    # print("set thresh, Max_MR: "+str(Max_MR_threshold))
+    # print("set thresh, Min_MR: "+str(Min_MR_threshold))
 
     return jsonify({
         "message": "success"
