@@ -54,12 +54,12 @@ def set_cache_parameter(cap, strategy):
 
 def plot_graphs(data_x_axis, data_y_axis, y_label):
 
-    print("+++++")
-    print(y_label)
-    print(data_x_axis)
-    print(data_y_axis)
-    print("+++++")
-    
+    # print("+++++")
+    # print(y_label)
+    # print(data_x_axis)
+    # print(data_y_axis)
+    # print("+++++")
+
     # Plot
     fig = Figure()
     ax = fig.subplots()
