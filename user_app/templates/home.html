@@ -9,5 +9,12 @@
         {% include "navigation.html" %}
         <h2>ECE1779 Assignment 2, Group 9</h2>
         <h2>Welcome to user app</h2>
+
+        <div>
+            {% if node_num is defined %}
+                    <h2>Cache Pool Size Changed! Now: {{node_num}} Cache Nodes In The Pool</h2>
+            {% endif %}
+        </div>
+
     <body>    
 </html>

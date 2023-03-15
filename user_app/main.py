@@ -134,8 +134,7 @@ def key_list():
 def cache_pool_change():
     # node_num
     node_num = f.request.get_json(force=True)["node_num"]
-    flash("This is a flashed message.")
-    return render_template("pool_change.html", node_num=node_num)
+    return render_template("home.html", node_num=node_num)
 
 # ________________________auto test api _________________________
 # @webapp.route('/api/delete_all', methods=['POST'])
