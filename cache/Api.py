@@ -119,6 +119,9 @@ def heartBeatStatus():
     miss_count = cw.accessCount - cw.hit
     size = cw.getSize()
 
+    cw.accessCount = 0
+    cw.hit = 0
+
     message = "ok"
     return jsonify({
         "message": message,
