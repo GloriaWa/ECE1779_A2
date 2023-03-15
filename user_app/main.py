@@ -152,7 +152,8 @@ def cache_pool_change():
 
 @webapp.route('/pool_change', methods=['GET', 'POST'])
 def pool_change_page():
-    return render_template("pool_change.html")
+    global history
+    return render_template("pool_change.html", history=history)
 
 # ________________________auto test api _________________________
 # @webapp.route('/api/delete_all', methods=['POST'])
