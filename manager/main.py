@@ -405,10 +405,12 @@ def configCache():
 
     if expRatio != None:
         conf.Ratio_expand_pool = float(expRatio)
+        print("EEEEEEEEEEEEEEEEEEEEEEE" + str(conf.Ratio_expand_pool))
         all_json["expRatio"] = expRatio
 
     if shrinkRatio != None:
         conf.Ratio_shrink_pool = float(shrinkRatio)
+        print("SSSSSSSSSSSSSSSSSSSS" + str(conf.Ratio_shrink_pool))
         all_json["shrinkRatio"] = shrinkRatio
 
     if maxMiss != None:

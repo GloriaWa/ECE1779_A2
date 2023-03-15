@@ -61,9 +61,9 @@ def write():
         file = request.files['file']
         filename = file.filename
 
-        print(key)
-        print(filename)
-        print(file)
+        # print(key)
+        # print(filename)
+        # print(file)
 
         re = rds_write(key, key)
         if re != "success":
