@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>A2</title>
+    <link rel="stylesheet" href='/static/css.css' />
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
 </head>
 <body>
-  <h2>Cache Pool Size Changed History</h2>
+    {% include "navigation.html" %}
+    <h4>Cache Pool Size Changed History</h4>
 
     {% if history is defined %}
         <table>
