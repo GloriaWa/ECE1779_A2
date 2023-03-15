@@ -244,8 +244,8 @@ def change_pool():
     update = f.request.get_json(force=True)["pool_update"]
 
     if update == '+':
-        if pool_update_validate():
-            double_node()
+        # if pool_update_validate():
+        double_node()
     else:
         divide_node()
 
