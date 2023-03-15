@@ -134,7 +134,7 @@ def key_list():
 def cache_pool_change():
     # node_num
     node_num = f.request.get_json(force=True)["node_num"]
-    return redirect(userApp + '/pool_change', code=302)
+    return redirect(userApp + '/home', code=302)
 
     # render_template("home.html", node_num=node_num)
     #
