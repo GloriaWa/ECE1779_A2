@@ -1,7 +1,7 @@
 import sys, os
 import requests
 import flask as f
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, flash
 from user_app import webapp
 from host_map import *
 
@@ -134,6 +134,7 @@ def key_list():
 def cache_pool_change():
     # node_num
     node_num = f.request.get_json(force=True)["node_num"]
+    flash("This is a flashed message.")
     return render_template("pool_change.html", node_num=node_num)
 
 # ________________________auto test api _________________________
