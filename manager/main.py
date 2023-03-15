@@ -352,6 +352,7 @@ def getRate():
 @webapp.route('/api/configure_cache?{parameters}', methods=['POST'])
 def configCache():
     args = request.args
+    print(args)
     mode = args.get('mode')
     numNodes = args.get('numNodes')
     cacheSize = args.get('cacheSize')
