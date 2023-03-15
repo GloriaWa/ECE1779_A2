@@ -119,8 +119,8 @@ def heartBeatStatus():
     miss_count = cw.accessCount - cw.hit
     size = cw.getSize()
 
-    cw.accessCount = 0
-    cw.hit = 0
+    # cw.accessCount = 0
+    # cw.hit = 0
 
     message = "ok"
     return jsonify({
@@ -131,6 +131,15 @@ def heartBeatStatus():
         "size": size
     })
 
+@backendApp.route('/clear_record', methods=['POST'])
+def clear_record():
+    cw.accessCount = 0
+    cw.hit = 0
+
+    message = "ok"
+    return jsonify({
+        "message": message,
+    })
 
 @backendApp.route('/get_all', methods=['POST'])
 def getAll():

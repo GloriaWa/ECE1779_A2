@@ -22,7 +22,7 @@ def initial_settings():
 
 def pollStatus():
     """ When the server is up, call backend every 5 seconds. The backend will upload its status information to the db, and this info is used for the statistics """
-
+    clear_count = 0
     while True:
         item_count = 0
         request_count = 0
@@ -48,7 +48,15 @@ def pollStatus():
 
         j = {"miss_rate": miss_rate, "hit_rate": hit_rate, "num_items": item_count,"size_of_items": size / (1024 * 1024), "num_requests": request_count}
         re = requests.post(image_storage + '/cw_put', json=j)
-        time.sleep(60)
+
+        if clear_count < 12:
+            clear_count += 1
+        else:
+            clear_count = 0
+            for i in range(conf.active_node):
+                res = requests.post(conf.cache_pool[i] + '/clear_record')
+
+        time.sleep(5)
 
 @webapp.teardown_appcontext
 def teardown_db(exception):
