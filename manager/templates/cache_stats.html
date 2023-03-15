@@ -11,6 +11,15 @@
         <br>
 
         <div>
+            <div>
+                {% if active_node_plot is defined %}
+                    <h4>Active Node Count: </h4>
+                    <img src= "data:image/png;base64, {{cache_count_plot}}" alt={{active_node_plot}}  class="img"/>
+                {% else %}
+                    <h4>Cache Item Plot Error</h4>
+                {% endif %}
+            </div>
+
 			<div>
                 {% if cache_count_plot is defined %}
                     <h4>Cache Item Count: </h4>
@@ -40,7 +49,7 @@
 
             <div>
                 {% if miss_count_plot is defined %}
-                    <h4>Miss Count: </h4>
+                    <h4>Miss Rate: </h4>
                     <img src= "data:image/png;base64, {{miss_count_plot}}" alt={{miss_count_plot}}  class="img"/>
                 {% else %}
                     <h4>Miss Rate Plot Error</h4>
@@ -49,7 +58,7 @@
 
             <div>
                 {% if hit_count_plot is defined %}
-                    <h4>Hit Count:</h4>
+                    <h4>Hit Rate:</h4>
                     <img src= "data:image/png;base64, {{hit_count_plot}}" alt={{hit_count_plot}}  class="img"/>
                 {% else %}
                     <h4>Hit Rate Plot Error</h4>

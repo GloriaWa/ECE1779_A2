@@ -48,10 +48,16 @@ class AwsClient:
             obj = self.s3.Object(self.bk, file_name)
             return obj.get()['Body'].read()
 
-    def cw_put(self, miss_rate, hit_rate, num_items, size_of_items, num_requests):
+    def cw_put(self, active_node, miss_rate, hit_rate, num_items, size_of_items, num_requests):
         """put metrics to cloudwatch"""
         response = self.cw.put_metric_data(
             MetricData=[
+                {
+                    'MetricName': 'number_of_active_node',
+                    'Unit': 'None',
+                    'Value': active_node,
+                    'StorageResolution': 1,
+                },
                 {
                     'MetricName': 'miss_rate',
                     'Unit': 'None',

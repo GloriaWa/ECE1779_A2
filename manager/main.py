@@ -46,7 +46,7 @@ def pollStatus():
             miss_rate = miss_count / request_count
             hit_rate = 1 - miss_rate
 
-        j = {"miss_rate": miss_rate, "hit_rate": hit_rate, "num_items": item_count,"size_of_items": size / (1024 * 1024), "num_requests": request_count}
+        j = {"active_node": conf.active_node,"miss_rate": miss_rate, "hit_rate": hit_rate, "num_items": item_count,"size_of_items": size / (1024 * 1024), "num_requests": request_count}
         re = requests.post(image_storage + '/cw_put', json=j)
 
         if clear_count < 12:
@@ -82,6 +82,11 @@ def cache_stats():
     # xx = []
     yy = {}
 
+    j = {"metric": "number_of_active_node"}
+    res = requests.post(image_storage + '/cw_get', json=j)
+    res = res.json()
+    yy['active_node'] = res["values"].copy()
+
     j = {"metric": "number_of_items_in_cache"}
     res = requests.post(image_storage + '/cw_get', json=j)
     res = res.json()
@@ -116,7 +121,7 @@ def cache_stats():
     for i, values in yy.items():
         plots[i] = plot_graphs(xx, values, i)
 
-    return render_template('cache_stats.html', cache_count_plot=plots['item_count'], cache_size_plot=plots['cache_size'], request_count_plot=plots['request_count'], hit_count_plot=plots['hit_rate'], miss_count_plot=plots['miss_rate'])
+    return render_template('cache_stats.html', active_node_plot=plots['active_node'],cache_count_plot=plots['item_count'], cache_size_plot=plots['cache_size'], request_count_plot=plots['request_count'], hit_count_plot=plots['hit_rate'], miss_count_plot=plots['miss_rate'])
 
 @webapp.route('/memcache_config', methods=['GET', 'POST'])
 def memcache_config():
@@ -294,11 +299,24 @@ def pool_config():
         minus_node()
 
 
+    if request.form.get("Max_MR_threshold") != None:
+        conf.Max_MR_threshold = float(request.form.get("Max_MR_threshold"))
+        print(1)
 
+    if request.form.get("Min_MR_threshold") != None:
+        conf.Min_MR_threshold = float(request.form.get("Min_MR_threshold"))
+        print(2)
 
+    if request.form.get("Ratio_expand_pool") != None:
+        conf.Ratio_expand_pool = float(request.form.get("Ratio_expand_pool"))
+        print(3)
 
+    if request.form.get("Ratio_shrink_pool") != None:
+        conf.Ratio_shrink_pool = float(request.form.get("Ratio_shrink_pool"))
+        print(4)
 
-
+        j = {"Max_MR_threshold": conf.Max_MR_threshold, "Min_MR_threshold": conf.Min_MR_threshold}
+        res = requests.post(autoscaler + '/set_thresh', json=j)
 
     j = {"node_num": conf.active_node}
     requests.post(userApp + '/cache_pool_change', json=j)
