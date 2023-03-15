@@ -326,6 +326,7 @@ def getNumNodes():
 def getRate():
     args = request.args
     rate = args.get('rate')
+    print(rate)
 
     if rate == "miss":
         j = {"metric": "miss_rate"}
@@ -351,16 +352,16 @@ def getRate():
 
 @webapp.route('/api/configure_cache?{parameters}', methods=['POST'])
 def configCache():
-    args = request.args
-    print(args)
-    mode = args.get('mode')
-    numNodes = args.get('numNodes')
-    cacheSize = args.get('cacheSize')
-    policy = args.get('policy')
-    expRatio = args.get('expRatio')
-    shrinkRatio = args.get('shrinkRatio')
-    maxMiss = args.get('maxMiss')
-    minMiss = args.get('minMiss')
+    # args = request.args
+    # print(args)
+    # mode = args.get('mode')
+    # numNodes = args.get('numNodes')
+    # cacheSize = args.get('cacheSize')
+    # policy = args.get('policy')
+    # expRatio = args.get('expRatio')
+    # shrinkRatio = args.get('shrinkRatio')
+    # maxMiss = args.get('maxMiss')
+    # minMiss = args.get('minMiss')
 
     # if mode != None:
     #     if mode == "manual":
