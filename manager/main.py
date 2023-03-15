@@ -378,7 +378,7 @@ def configCache():
 
     if numNodes != None:
         set_node(int(numNodes))
-        all_json["numNodes"] = numNodes
+        all_json["numNodes"] = int(numNodes)
 
     cache_para = get_cache_parameter()
     if cache_para != None:
@@ -392,7 +392,7 @@ def configCache():
     if cacheSize != None:
         # Due to we use number of items in the mencache, get the average value based on the memory size
         capacity = int(cacheSize)
-        all_json["cacheSize"] = cacheSize
+        all_json["cacheSize"] = int(cacheSize)
 
     if policy != None:
         stra = policy
