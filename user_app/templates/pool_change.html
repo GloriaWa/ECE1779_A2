@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>A2</title>
+    <link rel="stylesheet" href='/static/css.css' />
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+</head>
+<body>
+    {% include "navigation.html" %}
+    <h4>Cache Pool Size Changed History</h4>
+
+    {% if history is defined %}
+        <table>
+        {% for h in history %}
+            <tr><td>{{ h }}</td></tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+
+</body>
+</html>
