@@ -377,7 +377,7 @@ def configCache():
         all_json["mode"] = mode
 
     if numNodes != None:
-        set_node(numNodes)
+        set_node(int(numNodes))
         all_json["numNodes"] = numNodes
 
     cache_para = get_cache_parameter()
@@ -391,7 +391,7 @@ def configCache():
 
     if cacheSize != None:
         # Due to we use number of items in the mencache, get the average value based on the memory size
-        capacity = cacheSize // 2
+        capacity = int(cacheSize) // 2
         all_json["cacheSize"] = cacheSize
 
     if policy != None:
@@ -404,19 +404,19 @@ def configCache():
         res = requests.post(conf.cache_pool[i] + '/refreshConfiguration', json=j)
 
     if expRatio != None:
-        conf.Ratio_expand_pool = expRatio
+        conf.Ratio_expand_pool = float(expRatio)
         all_json["expRatio"] = expRatio
 
     if shrinkRatio != None:
-        conf.Ratio_shrink_pool = shrinkRatio
+        conf.Ratio_shrink_pool = float(shrinkRatio)
         all_json["shrinkRatio"] = shrinkRatio
 
     if maxMiss != None:
-        conf.Max_MR_threshold = maxMiss
+        conf.Max_MR_threshold = float(maxMiss)
         all_json["maxMiss"] = maxMiss
 
     if minMiss != None:
-        conf.Min_MR_threshold = minMiss
+        conf.Min_MR_threshold = float(minMiss)
         all_json["minMiss"] = minMiss
 
     j = {"Max_MR_threshold": conf.Max_MR_threshold, "Min_MR_threshold": conf.Min_MR_threshold}
