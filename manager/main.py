@@ -391,7 +391,7 @@ def configCache():
 
     if cacheSize != None:
         # Due to we use number of items in the mencache, get the average value based on the memory size
-        capacity = int(cacheSize) // 2
+        capacity = int(cacheSize)
         all_json["cacheSize"] = cacheSize
 
     if policy != None:

@@ -32,6 +32,7 @@ def set_node(num):
     if num < 1 or num > 8:
         return "fail"
 
+    conf.active_node = int(conf.active_node)
     new_pool = num
 
     id = []
@@ -54,6 +55,7 @@ def double_node():
     # Double the node
     print(conf.Ratio_expand_pool)
 
+    conf.active_node = int(conf.active_node)
     new_pool = min(conf.Ratio_expand_pool * conf.active_node, 8)
 
     id = []
@@ -76,6 +78,7 @@ def divide_node():
     # Divide the node num by two
     print(conf.Ratio_shrink_pool)
 
+    conf.active_node = int(conf.active_node)
     new_pool = max(conf.active_node // conf.Ratio_shrink_pool, 1)
 
     id = []
@@ -136,7 +139,7 @@ def minus_node():
 
 def reallocate(id, img, new_pool):
     # reallocate the content in the cache system
-    conf.active_node = new_pool
+    conf.active_node = int(new_pool)
 
     i = 0
     while i < len(id):
