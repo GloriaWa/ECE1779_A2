@@ -41,9 +41,11 @@ def check():
             miss = res['values'][-1]
 
             if miss > 0.5:
+                print("add node request")
                 j_add = {"pool_update": "+"}
                 res = requests.post(cache_pool_host + '/change_pool', json=j_add)
-            elif miss < 0.9:
+            elif miss < 0.1:
+                print("decrease node request")
                 j_minus = {"pool_update": "-"}
                 res = requests.post(cache_pool_host + '/change_pool', json=j_minus)
 
