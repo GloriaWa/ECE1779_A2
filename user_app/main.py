@@ -150,6 +150,10 @@ def cache_pool_change():
         "success":"true"
     })
 
+@webapp.route('/pool_change', methods=['GET', 'POST'])
+def pool_change_page():
+    render_template("pool_change.html")
+
 # ________________________auto test api _________________________
 # @webapp.route('/api/delete_all', methods=['POST'])
 # def api_delete_all():
