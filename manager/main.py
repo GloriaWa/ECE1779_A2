@@ -120,10 +120,11 @@ def cache_stats():
     # plot the graphs, the plotted graphs will be shown in the page, and graphs are updated every 5 seconds, since new data will be pushed to the db every 5 seconds
     plots = {}
     for i, values in yy.items():
-        print("here + " + str(i))
         plots[i] = plot_graphs(xx, values, i)
+    print(yy['active_node'])
+    print(plots['active_node'])
 
-    return render_template('cache_stats.html', active_node_plot=plots['active_node'],cache_count_plot=plots['item_count'], cache_size_plot=plots['cache_size'], request_count_plot=plots['request_count'], hit_count_plot=plots['hit_rate'], miss_count_plot=plots['miss_rate'])
+    return render_template('cache_stats.html', active_node_plot=plots['active_node'], cache_count_plot=plots['item_count'], cache_size_plot=plots['cache_size'], request_count_plot=plots['request_count'], hit_count_plot=plots['hit_rate'], miss_count_plot=plots['miss_rate'])
 
 @webapp.route('/memcache_config', methods=['GET', 'POST'])
 def memcache_config():
