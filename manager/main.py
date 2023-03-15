@@ -121,8 +121,6 @@ def cache_stats():
     plots = {}
     for i, values in yy.items():
         plots[i] = plot_graphs(xx, values, i)
-    print(yy['active_node'])
-    print(plots['active_node'])
 
     return render_template('cache_stats.html', active_node_plot=plots['active_node'], cache_count_plot=plots['item_count'], cache_size_plot=plots['cache_size'], request_count_plot=plots['request_count'], hit_count_plot=plots['hit_rate'], miss_count_plot=plots['miss_rate'])
 

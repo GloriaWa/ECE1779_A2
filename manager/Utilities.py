@@ -54,11 +54,17 @@ def set_cache_parameter(cap, strategy):
 
 def plot_graphs(data_x_axis, data_y_axis, y_label):
 
+    print("+++++")
+    print(y_label)
+    print(data_x_axis)
+    print(data_y_axis)
+    print("+++++")
+    
     # Plot
     fig = Figure()
     ax = fig.subplots()
     ax.plot(data_x_axis, data_y_axis)
-    ax.set(xlabel='Time (every 5 seconds)', ylabel=y_label)
+    ax.set(xlabel='Time (every 1 min)', ylabel=y_label)
 
     # x-axis overlaps, to solve this problem: https://matplotlib.org/2.0.2/users/recipes.html
     fig.autofmt_xdate()
