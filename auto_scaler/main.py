@@ -49,7 +49,7 @@ def check():
                 j_minus = {"pool_update": "-"}
                 res = requests.post(cache_pool_host + '/change_pool', json=j_minus)
 
-        time.sleep(5)
+        time.sleep(60)
 
 # while True:
 #     check()

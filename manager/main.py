@@ -298,6 +298,75 @@ def pool_config():
 
     return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mes="suc")
 
+
+
+# ---------------- Test Apis-------------------
+@webapp.route('/api/getNumNodes', methods=['POST'])
+def getNumNodes():
+    return jsonify({
+            "success": "true",
+            "numNodes": conf.active_node
+        })
+
+@webapp.route('/api/getRate', methods=['POST'])
+def getRate():
+    args = request.args
+    rate = args.get('rate')
+
+    if rate == "miss":
+        j = {"metric": "miss_rate"}
+        res = requests.post(image_storage + '/cw_get', json=j)
+        res = res.json()
+
+        return jsonify({
+                "success": "true",
+                "rate":rate,
+                "value": res["values"][-1]
+            })
+
+    elif rate == "hit":
+        j = {"metric": "hit_rate"}
+        res = requests.post(image_storage + '/cw_get', json=j)
+        res = res.json()
+
+        return jsonify({
+            "success": "true",
+            "rate": rate,
+            "value": res["values"][-1]
+        })
+
+@webapp.route('/api/configure_cache?{parameters}', methods=['POST'])
+def configCache():
+    args = request.args
+    mode = args.get('mode')
+    numNodes = args.get('numNodes')
+    cacheSize = args.get('cacheSize')
+    policy = args.get('policy')
+    expRatio = args.get('expRatio')
+    shrinkRatio = args.get('shrinkRatio')
+    maxMiss = args.get('maxMiss')
+    minMiss = args.get('minMiss')
+
+    return jsonify({
+            "success": "true",
+        })
+
+@webapp.route('/api/delete_all', methods=['POST'])
+def deleteAll():
+
+    for i in range(conf.active_node):
+        requests.post(conf.cache_pool[i] + '/clear')
+
+    requests.post(image_storage + '/delete_all')
+
+    return jsonify({
+            "success": "true",
+        })
+
+
+
+
+
 # @webapp.route('/toggle_auto_mode', methods=['GET', 'POST'])
 # def toggle_auto_mode():
 #     if request.form.get("manual_mode") != None:
