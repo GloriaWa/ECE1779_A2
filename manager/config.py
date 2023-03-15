@@ -12,5 +12,10 @@ cache_pool = {
 active_node = 1
 mode = 0
 
+Ratio_expand_pool = 2
+Ratio_shrink_pool = 0.5
+Max_MR_threshold = 0.5
+Min_MR_threshold = 0.1
+
 capacity = 12
 strategy = 'LRU'

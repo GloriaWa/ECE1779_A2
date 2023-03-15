@@ -298,6 +298,20 @@ def pool_config():
 
     return render_template('pool_config.html', node_num=conf.active_node, mode=str(conf.mode), mes="suc")
 
+# ########### add buttons
+@webapp.route('/set_paras', methods=['GET', 'POST'])
+def set_paras():
+    conf.Max_MR_threshold = request.form.get("Max_MR_threshold")
+    conf.Min_MR_threshold = request.form.get("Min_MR_threshold")
+    conf.Ratio_expand_pool = request.form.get("Ratio_expand_pool")
+    conf.Ratio_shrink_pool = request.form.get("Ratio_shrink_pool")
+
+    j = {"Max_MR_threshold": conf.Max_MR_threshold, "Min_MR_threshold": conf.Min_MR_threshold}
+    res = requests.post(autoscaler + '/set_thresh', json=j)
+
+    return jsonify({
+        "message": "success"
+    })
 
 
 # ---------------- Test Apis-------------------
@@ -346,6 +360,54 @@ def configCache():
     shrinkRatio = args.get('shrinkRatio')
     maxMiss = args.get('maxMiss')
     minMiss = args.get('minMiss')
+
+    if mode != None:
+        if mode == "manual":
+            j = {"mode": 0}
+            conf.mode = 0
+            res = requests.post(autoscaler + '/toggle_mode', json=j)
+        elif mode == "auto":
+            j = {"mode": 1}
+            conf.mode = 1
+            res = requests.post(autoscaler + '/toggle_mode', json=j)
+
+    if numNodes != None:
+        set_node(numNodes)
+
+    cache_para = get_cache_parameter()
+    if cache_para != None:
+        capacity = int(cache_para[2])
+        stra = cache_para[3]
+    else:
+        # Cannot query db, set to default initial value
+        capacity = 12
+        stra = "LRU"
+
+    if cacheSize != None:
+        # Due to we use number of items in the mencache, get the average value based on the memory size
+        capacity = cacheSize // 2
+    if policy != None:
+        stra = policy
+
+    status = set_cache_parameter(capacity, stra)
+    for i in range(conf.active_node):
+        j = {"size": capacity, "strategy": stra}
+        res = requests.post(conf.cache_pool[i] + '/refreshConfiguration', json=j)
+
+    if expRatio != None:
+        conf.Ratio_expand_pool = expRatio
+
+    if shrinkRatio != None:
+        conf.Ratio_shrink_pool = shrinkRatio
+
+    if maxMiss != None:
+        conf.Max_MR_threshold = maxMiss
+
+    if minMiss != None:
+        conf.Min_MR_threshold = minMiss
+
+    j = {"Max_MR_threshold": conf.Max_MR_threshold, "Min_MR_threshold": conf.Min_MR_threshold}
+    res = requests.post(autoscaler + '/set_thresh', json=j)
 
     return jsonify({
             "success": "true",
